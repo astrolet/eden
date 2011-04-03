@@ -1,0 +1,37 @@
+{
+  "name": "eden",
+  "description": "ephemeris on node",
+  "keywords": [ "astrology", "ephemeris" ],
+  "version": "0.0.1",
+  "homepage": "http://eden.astrolet.net",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/orlin/eden.git"
+  },
+  "bugs": {
+    "mail" : "support@astrolet.net",
+    "web" : "https://www.pivotaltracker.com/projects/203533"
+  },
+  "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)",
+  "directories": {
+    "lib": "./lib",
+    "scripts": "./scripts"
+  },
+  "dependencies":
+  { "coffee-script": ""
+  , "underscore": ""
+  , "underscore.string": "https://github.com/edtsech/underscore.string/tarball/master"
+  , "optimist": ""
+  , "eyes": ""
+  , "yaml": ""
+  , "markdown": ""
+  , "geoutils": ""
+  },
+  "scripts": {
+    "test": "vows test/*.js"
+  },
+  "bin": { "eden" : "./cli" },
+  "engines": {
+    "node": ">= 0.4.5 < 0.5.0"
+  }
+}
