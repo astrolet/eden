@@ -2,7 +2,7 @@
 // https://github.com/shivercube/node-config
 // https://github.com/shivercube/node-utils
 
-var _ = require('underscore');
+var _ = require('lin')._,
     path = require('path'),
     util = require('util'),
     childProcess = require('child_process'),

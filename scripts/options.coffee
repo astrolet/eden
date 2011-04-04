@@ -1,4 +1,4 @@
-_     = require("undermix")
+_     = require("lin")._
 argv  = require("optimist").argv
 
 class Options

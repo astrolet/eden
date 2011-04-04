@@ -13,19 +13,17 @@
     "web" : "https://www.pivotaltracker.com/projects/203533"
   },
   "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)",
+  "contributors": [],
   "directories": {
     "lib": "./lib",
     "scripts": "./scripts"
   },
+  "main": "./index.js",
   "dependencies":
   { "coffee-script": ""
-  , "underscore": ""
-  , "underscore.string": "https://github.com/edtsech/underscore.string/tarball/master"
+  , "lin": ""
   , "optimist": ""
   , "eyes": ""
-  , "yaml": ""
-  , "markdown": ""
-  , "geoutils": ""
   },
   "scripts": {
     "test": "vows test/*.js"

@@ -1,14 +1,15 @@
-_       = require("undermix")
-Gaia    = require("gaia")
+_       = require("lin")._
+Gaia    = require("lin").Gaia
 util    = require("util")
 spawn   = require("child_process").spawn
-Massage = require("massage")
+Massage = require("lin").Massage
 
 
 class Ephemeris
 
   run: (stream, treats) ->
-    ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@directions)}"], { cwd: __dirname + "/../scripts" }
+    ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@directions)}"]
+                              , { cwd: __dirname + "/../scripts" }
     treats = @directions.out if @directions.out instanceof Array and not treats?
     if treats?
       massage = new Massage treats

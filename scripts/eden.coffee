@@ -1,4 +1,4 @@
-_       = require("undermix")
+_       = require("lin")._
 fs      = require("fs")
 util    = require("util")
 opts    = require("./options")
@@ -29,7 +29,7 @@ tardis = (directions) ->
       output ephemeris
     when "experiment"
       # TODO: use seq
-      fs.readFile "scripts/config/ephemeris.js", "ascii", (err, data) ->
+      fs.readFile "#{__dirname}/config/ephemeris.js", "ascii", (err, data) ->
         throw err if err
         config = _.allFurther({"root": "../"}, eval data)
         config.data = "#{__dirname}/#{config.root}mnt/sin/data/" # TODO: what's the point? fix this
