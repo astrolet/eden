@@ -30,7 +30,23 @@ class Ephemeris
       if code isnt 0
         console.log 'ephemeris exited with code ' + code;
 
-  constructor: (@directions, moment = null, where = null) ->
+  constructor: (@override, moment = null, where = null) ->
+    @directions =
+      { "root": "#{__dirname}/../"
+      , "data": "#{__dirname}/../mnt/sin/data/"
+      , "out": "json" # "json" (is python's default), "print" (python's print), "pprint" (python's pretty-substitutes swe labels), "inspect" (prettier default)
+      , "time": null
+      , "geo": {"lat": null, "lon": null}
+      , "dms": false
+      , "ecliptic": [0, 3]
+      , "things": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15]
+      , "minors": [136199, 7066, 50000, 90377, 20000, 128]
+      , "system": "P"
+      }
+
+    if @override
+      @directions = _.allFurther @directions, @override
+
     @gaia = new Gaia @directions["geo"], @directions["time"]
     @directions.geo = {} # NOTE: overwrites the original geo - it should be an equivalent...
     @directions.geo.lat = @gaia.lat

@@ -26,10 +26,9 @@
   , "eyes": ""
   },
   "scripts": {
-    "test": "vows test/*.js"
+    "test": "vows spec/*.js"
   },
   "bin": { "eden" : "./cli" },
-  "engines": {
-    "node": ">= 0.4.5 < 0.5.0"
-  }
+  "os": ["aix", "freebsd", "linux", "macos", "solaris"],
+  "engines": { "node": ">= 0.4.5" }
 }
