@@ -8,4 +8,4 @@ _O, sweet this ephemeris on node is!_<br/>
 
 ## Unlicense + LICENSE
 
-This is [Unlicensed](http://unlicense.org) (free and unencumbered public domain software), except for LICENSE applying to the [Swiss Ephemeris](http://www.astro.com/swisseph) and its conditions (located in src).
+This is [Unlicensed](http://unlicense.org) (free and unencumbered public domain software), except for LICENSE applying to the [Swiss Ephemeris](http://www.astro.com/swisseph) and its conditions (located in swe).

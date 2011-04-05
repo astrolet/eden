@@ -37,7 +37,7 @@
   },
   "bin": { "eden" : "./cli.js" },
   "os": ["aix", "freebsd", "linux", "macos", "solaris"],
-  "engines": { "node" : "0.4 || 0.5", "npm" : "1" }
+  "engines": { "node" : "0.4 || 0.5", "npm" : "1" },
   "licenses" :
   [ { "type" : "Unlicense"
     , "url" : "http://unlicense.org/"
