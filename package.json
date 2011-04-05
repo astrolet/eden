@@ -1,53 +1,52 @@
-{
-  "name": "eden",
-  "description": "ephemeris on node",
-  "keywords": [ "astrology", "ephemeris" ],
-  "version": "0.0.1-1",
-  "homepage": "http://eden.astrolet.net",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/orlin/eden.git"
-  },
-  "bugs": {
-    "mail" : "support@astrolet.net",
-    "web" : "https://www.pivotaltracker.com/projects/203533"
-  },
-  "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)",
-  "contributors": [],
-  "directories":
+{ "name": "eden"
+, "description": "ephemeris for humans on node"
+, "keywords": [ "astrology", "ephemeris", "cli" ]
+, "version": "0.0.1-1"
+, "homepage": "http://astrolin.com/eden"
+, "repository":
+  { "type": "git"
+  , "url": "git://github.com/astrolet/eden.git"
+  }
+, "bugs":
+  { "mail": "support@astrolet.net"
+  , "web" : "https://www.pivotaltracker.com/projects/203533"
+  }
+, "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)"
+, "contributors": []
+, "directories":
   { "lib": "./lib"
   , "bin": "./bin"
   , "doc": "./doc"
   , "man": "./man1"
-  },
-  "main": "eden",
-  "dependencies":
+  }
+, "main": "eden"
+, "dependencies":
   { "coffee-script": ""
   , "lin": ""
   , "optimist": ""
   , "eyes": ""
-  },
-  "devDependencies":
+  }
+, "devDependencies":
   { "ronn": ""
   , "vows": ""
-  },
-  "scripts":
+  }
+, "scripts":
   { "test": "vows spec/*.js"
   , "postinstall": "sh ./scripts/install-message.sh"
-  },
-  "bin": { "eden" : "./cli.js" },
-  "os": ["aix", "freebsd", "linux", "macos", "solaris"],
-  "engines": { "node" : "0.4 || 0.5", "npm" : "1" },
-  "licenses" :
-  [ { "type" : "Unlicense"
+  }
+, "bin": { "eden" : "./cli.js" }
+, "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
+, "engines" : { "node" : "0.4 || 0.5", "npm" : "1" }
+, "licenses":
+  [ { "type": "Unlicense"
     , "url" : "http://unlicense.org/"
     }
     ,
-    { "type" : "GPL"
+    { "type": "GPL"
     , "url" : "http://github.com/astrolet/eden/raw/master/LICENSE"
     }
     ,
-    { "type" : "Swiss Ephemeris"
+    { "type": "Swiss Ephemeris"
     , "url" : "http://github.com/astrolet/eden/raw/master/LICENSE"
     }
   ]
