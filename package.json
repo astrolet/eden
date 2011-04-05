@@ -14,21 +14,28 @@
   },
   "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)",
   "contributors": [],
-  "directories": {
-    "lib": "./lib",
-    "scripts": "./scripts"
+  "directories":
+  { "lib": "./lib"
+  , "bin": "./bin"
+  , "doc": "./doc"
+  , "man": "./man1"
   },
-  "main": "./index.js",
+  "main": "eden",
   "dependencies":
   { "coffee-script": ""
   , "lin": ""
   , "optimist": ""
   , "eyes": ""
   },
-  "scripts": {
-    "test": "vows spec/*.js"
+  "devDependencies":
+  { "ronn": ""
+  , "vows": ""
   },
-  "bin": { "eden" : "./cli" },
+  "scripts":
+  { "test": "vows spec/*.js"
+  , "postinstall": "sh ./scripts/install-message.sh"
+  },
+  "bin": { "eden" : "./cli.js" },
   "os": ["aix", "freebsd", "linux", "macos", "solaris"],
-  "engines": { "node": ">= 0.4.5" }
+  "engines": { "node" : "0.4 || 0.5", "npm" : "1" }
 }

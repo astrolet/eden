@@ -1,3 +1,8 @@
+#!/usr/bin/env coffee
+
+require.paths.unshift __dirname + "/../lib"
+require.paths.unshift __dirname + "/../node_modules"
+
 _       = require("lin")._
 fs      = require("fs")
 util    = require("util")
