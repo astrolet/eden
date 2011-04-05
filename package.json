@@ -2,7 +2,7 @@
   "name": "eden",
   "description": "ephemeris on node",
   "keywords": [ "astrology", "ephemeris" ],
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "homepage": "http://eden.astrolet.net",
   "repository": {
     "type": "git",
