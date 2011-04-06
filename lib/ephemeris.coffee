@@ -16,7 +16,7 @@ class Ephemeris
 
   defaults:
     "root": "#{__dirname}/../"
-    "data": "mnt/sin/data/"
+    "data": "node_modules/gravity/data/"
     "out": "json"
     "time": null
     "geo": {"lat": null, "lon": null}
