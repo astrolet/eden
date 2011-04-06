@@ -4,14 +4,11 @@ require.paths.unshift __dirname + "/../lib"
 require.paths.unshift __dirname + "/../node_modules"
 
 _       = require("lin")._
-fs      = require("fs")
-util    = require("util")
-opts    = require("./options")
-conf    = require("./node-config")
+opts    = require("options")
 inspect = require("eyes").inspector({styles: {all: "magenta"}})
 Ephemeris = require("ephemeris")
 
-output = (ephemeris) ->
+output = (ephemeris, massage) ->
   if opts.verbose
     console.log "command: #{opts.command}"
     console.log "options:"
@@ -21,34 +18,19 @@ output = (ephemeris) ->
     console.log ""
     console.log "results"
     console.log "======="
-  ephemeris.run(process.stdout)
+  ephemeris.run(process.stdout, massage)
   console.log ""
 
-tardis = (directions) ->
-  directions = _.allFurther(directions, opts.merge)
-  switch opts.command
-    when "ephemeris"
-      if not opts.argv.data.match /^\//
-        directions.data = "#{__dirname}/#{directions.root}#{opts.argv.data}" # relative paths
-      ephemeris = new Ephemeris directions
-      output ephemeris
-    when "experiment"
-      # TODO: use seq
-      fs.readFile "#{__dirname}/config/ephemeris.js", "ascii", (err, data) ->
-        throw err if err
-        config = _.allFurther({"root": "../"}, eval data)
-        config.data = "#{__dirname}/#{config.root}mnt/sin/data/" # TODO: what's the point? fix this
-        ephemeris = new Ephemeris config
-        ephemeris.run(process.stdout, ["json", "indent"])
+switch opts.command
+  when "ephemeris"
+    # make inspect a default? (options.coffee)
+    ephemeris = new Ephemeris _.allFurther opts.merge, { "out": "inspect" }
+    output ephemeris
+  when "experiment"
+    ephemeris = new Ephemeris opts.merge
+    output ephemeris, ["json", "indent"]
 
-    else
-      console.log "Unknown command '#{opts.command}' has bypassed the options validator..."
-      console.log "Nothing to do."
-      process.exit(0)
-
-conf.init __dirname + "/config", opts.command, (error, directions) ->
-  if error?
-    util.print "Unable to init the config: " + error
-    process.exit(1)
-
-  tardis directions
+  else
+    console.log "Unknown command '#{opts.command}' has bypassed the options validator..."
+    console.log "Nothing to do."
+    process.exit(0)
