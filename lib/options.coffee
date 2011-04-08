@@ -1,5 +1,5 @@
-_     = require("lin")._
 argv  = require("optimist").argv
+_     = require("massagist")._
 
 class Options
 

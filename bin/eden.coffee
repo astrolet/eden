@@ -3,9 +3,9 @@
 require.paths.unshift __dirname + "/../lib"
 require.paths.unshift __dirname + "/../node_modules"
 
-_       = require("lin")._
 opts    = require("options")
 inspect = require("eyes").inspector({styles: {all: "magenta"}})
+_       = require("massagist")._
 Ephemeris = require("ephemeris")
 
 output = (ephemeris, massage) ->

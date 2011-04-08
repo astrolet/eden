@@ -1,9 +1,8 @@
-_       = require("lin")._
 Gaia    = require("lin").Gaia
 util    = require("util")
 spawn   = require("child_process").spawn
-Massage = require("lin").Massage
-
+Massage = require("massagist").Massage
+_       = require("massagist")._
 
 class Ephemeris
 
