@@ -23,12 +23,8 @@ output = (ephemeris, massage) ->
 
 switch opts.command
   when "ephemeris"
-    # make inspect a default? (options.coffee)
-    ephemeris = new Ephemeris _.allFurther opts.merge, { "out": "inspect" }
-    output ephemeris
-  when "experiment"
     ephemeris = new Ephemeris opts.merge
-    output ephemeris, ["json", "indent"]
+    output ephemeris
 
   else
     console.log "Unknown command '#{opts.command}' has bypassed the options validator..."

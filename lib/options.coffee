@@ -3,7 +3,7 @@ _     = require("massagist")._
 
 class Options
 
-  commands: ["help", "ephemeris", "experiment"]
+  commands: ["help", "ephemeris"]
   help: false
   verbose: false
   easy:
@@ -50,7 +50,9 @@ class Options
     # massaged output
     @merge.out = argv.o if argv.o? and not (argv.o instanceof Boolean)
     @merge.out = argv.out if argv.out? and not (argv.out instanceof Boolean) # spelled-out wins
-    if @merge.out?
+    unless @merge.out?
+      @merge.out = ["json", "inspect"] # the cli default
+    else
       # NOTE: this could be simplified, but is it worth the bother?
       any_equal = if @merge.out.match /=/ then true else false
       if @merge.out.match /,/ # comma-separated sequence (= Array)
