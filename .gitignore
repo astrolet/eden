@@ -13,6 +13,7 @@ tmp
 
 # Node
 node_modules
+.lock-wscript
 lib-cov
 *.seed
 *.log
@@ -25,3 +26,7 @@ lib-cov
 pids
 logs
 results
+
+build
+swe/src/*.o
+lib/swe.dylib

@@ -27,14 +27,16 @@
   , "eyes": ""
   , "gravity": ""
   , "massagist": ""
+  , "node-ffi": "https://github.com/simplegeo/node-ffi/tarball/master"
   }
 , "devDependencies":
   { "ronn": ""
   , "vows": ""
   }
 , "scripts":
-  { "test": "vows spec/*.js"
+  { "install" : "node-waf configure build"
   , "postinstall": "sh ./scripts/install-message.sh"
+  , "test": "vows spec/*.js"
   }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
