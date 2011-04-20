@@ -6,11 +6,6 @@ log
 .hg/*
 .svn/*
 
-# Duostack
-mnt
-log
-tmp
-
 # Node
 node_modules
 .lock-wscript
@@ -30,3 +25,10 @@ results
 build
 swe/src/*.o
 lib/swe.dylib
+
+# Tools
+.settings.xml
+
+# Duostack
+mnt
+tmp

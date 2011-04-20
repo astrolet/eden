@@ -1,8 +1,8 @@
 { "name": "eden"
 , "description": "ephemeris for humans on node"
 , "keywords": [ "astrology", "ephemeris", "cli" ]
-, "version": "0.0.1-3"
-, "homepage": "http://astrolin.com/eden"
+, "version": "0.0.1-4"
+, "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
   , "url": "git://github.com/astrolet/eden.git"
@@ -21,17 +21,17 @@
   }
 , "main": "eden"
 , "dependencies":
-  { "coffee-script": ""
-  , "lin": ""
-  , "optimist": ""
-  , "eyes": ""
-  , "gravity": ""
-  , "massagist": ""
+  { "coffee-script": "~1.0.1"
+  , "lin": "*"
+  , "optimist": "~0.1.9"
+  , "eyes": "~0.1.6"
+  , "gravity": "*"
+  , "massagist": "*"
   , "node-ffi": "https://github.com/simplegeo/node-ffi/tarball/master"
   }
 , "devDependencies":
-  { "ronn": ""
-  , "vows": ""
+  { "ronn": "*"
+  , "vows": "*"
   }
 , "scripts":
   { "install" : "node-waf configure build"
