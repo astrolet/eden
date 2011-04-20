@@ -1,7 +1,7 @@
 { "name": "eden"
 , "description": "ephemeris for humans on node"
 , "keywords": [ "astrology", "ephemeris", "cli" ]
-, "version": "0.0.1-4"
+, "version": "0.0.1-5"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
@@ -9,7 +9,7 @@
   }
 , "bugs":
   { "mail": "support@astrolet.net"
-  , "web" : "https://www.pivotaltracker.com/projects/203533"
+  , "web" : "https://github.com/astrolet/eden/issues"
   }
 , "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)"
 , "contributors": []
