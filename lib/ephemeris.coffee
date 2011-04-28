@@ -16,7 +16,7 @@ class Ephemeris
 
   defaults:
     "root": "#{__dirname}/../"
-    "data": "node_modules/gravity/data/"
+    "data": "node_modules/precious/node_modules/gravity/data/" # indirect dependency (precious sin)
     "out": "json"
     "time": null
     "geo": {"lat": null, "lon": null}
@@ -71,17 +71,13 @@ class Ephemeris
       else throw new Error "too many arguments..."
 
   run: (stream, treats) ->
-    ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
-                              , { cwd: __dirname + "/../bin" }
+    ephemeris = spawn "precious.py", ["#{JSON.stringify(@settings)}"]
     treats = @settings.out if @settings.out instanceof Array and not treats?
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
     else if _.include ["inspect", "indent"], @settings.out
       massage = new Massage ["json", @settings.out]
-      massage.pipe ephemeris.stdout, stream, "ascii"
-    else if @settings.out == "yaml"
-      massage = new Massage [@settings.out]
       massage.pipe ephemeris.stdout, stream, "ascii"
     else
       util.pump ephemeris.stdout, stream, (error) ->

@@ -1,7 +1,7 @@
 { "name": "eden"
 , "description": "ephemeris for humans on node"
 , "keywords": [ "astrology", "ephemeris", "cli" ]
-, "version": "0.0.1-7"
+, "version": "0.0.1-8"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
@@ -22,11 +22,10 @@
 , "main": "eden"
 , "dependencies":
   { "coffee-script": "~1.0.1"
-  , "precious": "*"
   , "lin": "*"
+  , "precious": "*"
   , "optimist": "~0.1.9"
   , "eyes": "~0.1.6"
-  , "gravity": "*"
   , "massagist": "*"
   }
 , "devDependencies":
