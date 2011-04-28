@@ -4,11 +4,9 @@ cat <<MESSAGE
 
 Thanks for installing Eden.
 
-Do npm-install for the rest of the node_modules (due to .gitignore).
+Please npm-install the package.json dependencies (since node_modules are not bundled).
 
-For the time being, install pyswisseph <http://pypi.python.org/pypi/pyswisseph/> from source.
-
-There is also a <http://pyyaml.org/wiki/PyYAML/> dependency (that should go away some day).
+There is also a <http://pyyaml.org/wiki/PyYAML/> dependency (that should go away).
 
 Read LICENSE (full copy found in swe/src) before use.
 

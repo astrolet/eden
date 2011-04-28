@@ -3,7 +3,7 @@ util    = require("util")
 spawn   = require("child_process").spawn
 Massage = require("massagist").Massage
 _       = require("massagist")._
-FFI     = require("node-ffi/lib/ffi")
+# FFI     = require("node-ffi/lib/ffi")
 
 class Ephemeris
 
@@ -34,7 +34,7 @@ class Ephemeris
 
   constructor: (@specifics = {}) ->
     @settings = _.allFurther(@defaults, @specifics)
-    @ffi = new FFI.Library __dirname + "/../lib/swe", @bindings
+    # @ffi = new FFI.Library __dirname + "/../lib/swe", @bindings
 
     unless @settings.data.match /^\//
       # if not absolute then relative (to eden) ephemeris data path
@@ -46,6 +46,9 @@ class Ephemeris
     @settings.geo.lon = @gaia.lon
     @settings.ut = @gaia.ut
 
+  # not used
+  # ffi hard to install (npm issue)
+  # ephemeris provided by precious module
   swe: (call) ->
     f = "swe_#{call}"
     # console.log arguments
