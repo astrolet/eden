@@ -21,10 +21,8 @@ class Ephemeris
     "time": null
     "geo": {"lat": null, "lon": null}
     "dms": false
-    "ecliptic": [0, 3]
-    "things": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15]
-    "minors": [136199, 7066, 50000, 90377, 20000, 128]
-    "system": "P"
+    "stuff": [ [0, 3], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15], [136199, 7066, 50000, 90377, 20000, 128] ]
+    "houses": "K"
 
   bindings:
     "swe_set_ephe_path": ["void", ["string"]]
@@ -71,7 +69,8 @@ class Ephemeris
       else throw new Error "too many arguments..."
 
   run: (stream, treats) ->
-    ephemeris = spawn "precious.py", ["#{JSON.stringify(@settings)}"]
+    ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
+                              , { cwd: __dirname + "/../node_modules/precious/lib" }
     treats = @settings.out if @settings.out instanceof Array and not treats?
     if treats?
       massage = new Massage treats
