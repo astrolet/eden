@@ -16,7 +16,7 @@ class Ephemeris
 
   defaults:
     "root": "#{__dirname}/../"
-    "data": "node_modules/precious/node_modules/gravity/data/" # indirect dependency (precious sin)
+    "data": "node_modules/gravity/data/"
     "out": "json"
     "time": null
     "geo": {"lat": null, "lon": null}
