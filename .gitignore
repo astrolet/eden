@@ -1,0 +1,34 @@
+.DS_Store
+log
+*~
+.#*
+.hgignore
+.hg/*
+.svn/*
+
+# Node
+node_modules
+.lock-wscript
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+pids
+logs
+results
+
+build
+swe/src/*.o
+lib/swe.dylib
+
+# Tools
+.settings.xml
+
+# Duostack
+mnt
+tmp
