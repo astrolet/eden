@@ -1,0 +1,25 @@
+# first:
+# `gem install terminitor` # in Gemfile (is Linux ok)?
+# `echo "EDEN_PATH=~/<path/to/lin>" >> ~/.bash_profile`
+# `source ~/.bash_profile`
+# later:
+# `cd EDEN_PATH && bundle exec terminitor start`
+
+before { run 'cd LIN_PATH' }
+
+tab :name => "Eden", :selected => true do
+  run "clear"
+  run "ls -a"
+end
+
+tab :name => "Eden Docs", :settings => "Red Sands" do
+  run "cake assets:watch"
+end
+
+tab :name => "Eden serve docs/", :settings => "Grass" do
+  run "bundle exec serve docs"
+end
+
+tab :name => "Eden docs LiveReload", :settings => "Red Sands" do
+  run "bundle exec livereload docs"
+end

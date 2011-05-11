@@ -16,8 +16,7 @@
 , "directories":
   { "lib": "./lib"
   , "bin": "./bin"
-  , "doc": "./doc"
-  , "man": "./man1"
+  , "man": "./man"
   }
 , "main": "eden"
 , "dependencies":
@@ -30,16 +29,15 @@
   , "massagist": "*"
   }
 , "devDependencies":
-  { "ronn": "*"
+  { "docco": "*"
   , "vows": "*"
+  , "async": "*"
+  , "watch-tree": "*"
   }
-, "scripts":
-  { "postinstall": "sh ./scripts/install-message.sh"
-  , "test": "vows spec/*.js"
-  }
+, "scripts": { "postinstall": "sh ./scripts/install-message.sh" }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
-, "engines" : { "node" : "0.4 || 0.5" }
+, "engines" : { "node" : "0.4" }
 , "licenses":
   [ { "type": "Unlicense"
     , "url" : "http://unlicense.org/"
