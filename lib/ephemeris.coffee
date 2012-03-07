@@ -79,8 +79,7 @@ class Ephemeris
       massage = new Massage ["json", @settings.out]
       massage.pipe ephemeris.stdout, stream, "ascii"
     else
-      util.pump ephemeris.stdout, stream, (error) ->
-        throw error if error?
+      ephemeris.stdout.pipe stream
 
     ephemeris.stderr.on "data", (data) ->
       console.log data.toString("ascii")
