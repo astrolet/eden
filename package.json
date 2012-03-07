@@ -9,7 +9,7 @@
   }
 , "bugs":
   { "mail": "support@astrolet.net"
-  , "web" : "https://github.com/astrolet/eden/issues"
+  , "url" : "https://github.com/astrolet/eden/issues"
   }
 , "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)"
 , "contributors": []
@@ -37,7 +37,7 @@
 , "scripts": { "postinstall": "sh ./scripts/install-message.sh" }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
-, "engines" : { "node" : "0.4" }
+, "engines" : { "node" : "0.6.x", "npm": "1.1.x" }
 , "licenses":
   [ { "type": "Unlicense"
     , "url" : "http://unlicense.org/"

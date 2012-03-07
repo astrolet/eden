@@ -1,9 +1,6 @@
 #!/usr/bin/env coffee
 
-require.paths.unshift __dirname + "/../lib"
-require.paths.unshift __dirname + "/../node_modules"
-
-Ephemeris = require "ephemeris"
+Ephemeris = require "../lib/ephemeris"
 e = new Ephemeris
 e.swe "set_ephe_path", e.settings.data
 
