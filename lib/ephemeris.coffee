@@ -4,7 +4,8 @@ spawn   = require("child_process").spawn
 Massage = require("massagist").Massage
 _       = require("massagist")._
 cliff   = require("cliff")
-# FFI     = require("node-ffi/lib/ffi")
+degrees = require("lin").degrees
+# FFI   = require("node-ffi/lib/ffi")
 
 class Ephemeris
 
@@ -79,13 +80,24 @@ class Ephemeris
       massage.pipe ephemeris.stdout, stream, "ascii"
     else if @settings.out is "tab"
       # this is a bit ugly because it's easier to not change the precious output
+      # will need to at least add an input method to lin's itemerge (soon)
       ephemeris.stdout.on "data", (data) ->
-        once = false
         json = JSON.parse data
+        [once, idx] = [false, 0]
         [objs, rows, colors] = [[], ["id"], []]
         for i, group of json
           for id, it of group
-            objs.push _.extend {"id": id}, it
+            objs.push { "id": id }
+            for key, val of it
+              switch key
+                when "0" then objs[idx][key] = degrees.lon(val).str()
+                when "3"
+                  # precision, rounding and alignment (if negative not <= -10?)
+                  val = val.toFixed 3
+                  val = (if val < 0 or val >=10  then val else " " + val)
+                  objs[idx][key] = val
+                else objs[idx][key] = val
+            idx++
             unless once
               rows = _.union rows, _.keys it
               once = true
