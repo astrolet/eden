@@ -3,11 +3,13 @@ util    = require("util")
 spawn   = require("child_process").spawn
 Massage = require("massagist").Massage
 _       = require("massagist")._
+cliff   = require("cliff")
 # FFI     = require("node-ffi/lib/ffi")
 
 class Ephemeris
 
   # @settings.out can be:
+  # "tab" (should become eden's default), uses Your CLI Formatting Friend
   # "json" (is python's default)
   # "print" (python's print)
   # "pprint" (python's pretty-substitutes swe labels)
@@ -75,6 +77,21 @@ class Ephemeris
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
+    else if @settings.out is "tab"
+      # this is a bit ugly because it's easier to not change the precious output
+      ephemeris.stdout.on "data", (data) ->
+        once = false
+        json = JSON.parse data
+        [objs, rows, colors] = [[], ["id"], []]
+        for i, group of json
+          for id, it of group
+            objs.push _.extend {"id": id}, it
+            unless once
+              rows = _.union rows, _.keys it
+              once = true
+        colors.push "red" for row in rows
+        stream.write cliff.stringifyObjectRows objs, rows, colors
+        stream.write "\n\n"
     else if _.include ["inspect", "indent"], @settings.out
       massage = new Massage ["json", @settings.out]
       massage.pipe ephemeris.stdout, stream, "ascii"

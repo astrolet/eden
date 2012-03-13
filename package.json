@@ -26,6 +26,7 @@
   , "optimist": "~0.1.9"
   , "eyes": "~0.1.6"
   , "massagist": "*"
+  , "cliff": "*"
   }
 , "devDependencies":
   { "docco": "*"

@@ -75,7 +75,8 @@ class Options
                 console.log "Massagist '#{out[0]}' has invalid json option: #{out[1]}"
                 process.exit(1)
             else
-              # assuming string options (e.g. intent="\t") - compensating for strange \t behavior
+              # handling string (e.g. eden -o json,indent="\t") - compensate for
+              # what appears to be strange \t behavior...
               return [out[0], String(out[1]).replace(/\\t/g, "\t")]
           else
             return massagist
