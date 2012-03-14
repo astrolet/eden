@@ -90,7 +90,7 @@ class Ephemeris
             objs.push { "id": id }
             for key, val of it
               switch key
-                when "0" then objs[idx][key] = degrees.lon(val).str()
+                when "0" then objs[idx][key] = degrees.lon(val).rep('str')
                 when "3"
                   # precision, rounding and alignment (if negative not <= -10?)
                   val = val.toFixed 3
