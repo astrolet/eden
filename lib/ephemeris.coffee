@@ -82,24 +82,30 @@ class Ephemeris
       # this is a bit ugly because it's easier to not change the precious output
       # will need to at least add an input method to lin's itemerge (soon)
       ephemeris.stdout.on "data", (data) ->
+        rpad = ' ' # pad on the right of each column (the values)
+        labels =
+          "0": "   longitude"
+          "3": " speed"
         json = JSON.parse data
         [once, idx] = [false, 0]
-        [objs, rows, colors] = [[], ["id"], []]
+        [objs, rows, colors] = [[], ["what"], []]
         for i, group of json
           for id, it of group
-            objs.push { "id": id }
+            objs.push { "what": id + rpad }
             for key, val of it
+              label = labels[key] ? key
               switch key
-                when "0" then objs[idx][key] = degrees.lon(val).rep('str')
+                when "0"
+                  objs[idx][label] = degrees.lon(val).rep('str') + rpad
                 when "3"
                   # precision, rounding and alignment (if negative not <= -10?)
                   val = val.toFixed 3
                   val = (if val < 0 or val >=10  then val else " " + val)
-                  objs[idx][key] = val
-                else objs[idx][key] = val
+                  objs[idx][label] = val + rpad
+                else objs[idx][label] = val + rpad
             idx++
             unless once
-              rows = _.union rows, _.keys it
+              rows = _.union rows, _.map _.keys(it), (key) -> labels[key]
               once = true
         colors.push "red" for row in rows
         stream.write cliff.stringifyObjectRows objs, rows, colors
