@@ -88,11 +88,13 @@ class Ephemeris
           "3": " speed"
         json = JSON.parse data
         [once, idx] = [false, 0]
-        [objs, rows, colors] = [[], ["what"], []]
+        [objs, rows, colors] = [[], [" ", "what"], []]
         for i, group of json
           if i is "1" or i is "2"
             for id, it of group
-              objs.push { "what": id + rpad }
+              objs.push
+                "what": id + rpad
+                " ": if i is "2" then "+" else ""
               for key, val of it
                 label = labels[key] ? key
                 switch key
