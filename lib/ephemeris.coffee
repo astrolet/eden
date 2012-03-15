@@ -78,7 +78,7 @@ class Ephemeris
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
-    else if @settings.out is "tab"
+    else if @settings.out is "phase"
       # this is a bit ugly because it's easier to not change the precious output
       # will need to at least add an input method to lin's itemerge (soon)
       ephemeris.stdout.on "data", (data) ->

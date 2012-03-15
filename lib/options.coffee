@@ -51,7 +51,7 @@ class Options
     @merge.out = argv.o if argv.o? and not (argv.o instanceof Boolean)
     @merge.out = argv.out if argv.out? and not (argv.out instanceof Boolean) # spelled-out wins
     unless @merge.out?
-      @merge.out = ["json", "inspect"] # the cli default
+      @merge.out = "phase" # the cli default (use Array for a Massagist sequence)
     else
       # NOTE: this could be simplified, but is it worth the bother?
       any_equal = if @merge.out.match /=/ then true else false
