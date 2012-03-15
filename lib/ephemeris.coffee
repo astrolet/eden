@@ -95,9 +95,13 @@ class Ephemeris
           if i is "1" or i is "2"
             for id, it of group
               item = ensemble.sid id
+              [lead, what] = [(if i is "2" then "+" else ""), id]
+              if item.get('id') isnt '?'
+                lead = item.get('u').white if item.get('u')?
+                what = item.get('name')
               objs.push
-                "what": (if item.get('id') isnt '?' then item.get('name').white else id) + rpad
-                " ": if i is "2" then "+" else ""
+                " ": lead + rpad
+                "what": what + rpad
               for key, val of it
                 label = labels[key] ? key
                 switch key
