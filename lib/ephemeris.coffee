@@ -7,6 +7,7 @@ cliff   = require("cliff")
 degrees = require("lin").degrees
 # FFI   = require("node-ffi/lib/ffi")
 
+
 class Ephemeris
 
   # @settings.out can be:
@@ -81,6 +82,7 @@ class Ephemeris
     else if @settings.out is "phase"
       # this is a bit ugly because it's easier to not change the precious output
       # will need to at least add an input method to lin's itemerge (soon)
+      ensemble = new (require "lin").Ensemble
       ephemeris.stdout.on "data", (data) ->
         rpad = ' ' # pad on the right of each column (the values)
         labels =
@@ -92,8 +94,9 @@ class Ephemeris
         for i, group of json
           if i is "1" or i is "2"
             for id, it of group
+              item = ensemble.sid id
               objs.push
-                "what": id + rpad
+                "what": (if item.get('id') isnt '?' then item.get('name').white else id) + rpad
                 " ": if i is "2" then "+" else ""
               for key, val of it
                 label = labels[key] ? key
