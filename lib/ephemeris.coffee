@@ -90,23 +90,25 @@ class Ephemeris
         [once, idx] = [false, 0]
         [objs, rows, colors] = [[], ["what"], []]
         for i, group of json
-          for id, it of group
-            objs.push { "what": id + rpad }
-            for key, val of it
-              label = labels[key] ? key
-              switch key
-                when "0"
-                  objs[idx][label] = degrees.lon(val).rep('str') + rpad
-                when "3"
-                  # precision, rounding and alignment (if negative not <= -10?)
-                  val = val.toFixed 3
-                  val = (if val < 0 or val >=10  then val else " " + val)
-                  objs[idx][label] = val + rpad
-                else objs[idx][label] = val + rpad
-            idx++
-            unless once
-              rows = _.union rows, _.map _.keys(it), (key) -> labels[key]
-              once = true
+          if i is "1" or i is "2"
+            for id, it of group
+              objs.push { "what": id + rpad }
+              for key, val of it
+                label = labels[key] ? key
+                switch key
+                  when "0"
+                    objs[idx][label] = degrees.lon(val).rep('str') + rpad
+                  when "3"
+                    # precision, rounding and alignment (if negative not <= -10?)
+                    val = val.toFixed 3
+                    val = (if val < 0 or val >=10  then val else " " + val)
+                    objs[idx][label] = val + rpad
+                  else objs[idx][label] = val + rpad
+              idx++
+              unless once
+                rows = _.union rows, _.map _.keys(it), (key) -> labels[key]
+                once = true
+        objs = _.sortBy objs, (obj) -> obj[labels['0']] # longitude-sorted
         colors.push "red" for row in rows
         stream.write cliff.stringifyObjectRows objs, rows, colors
         stream.write "\n\n"
