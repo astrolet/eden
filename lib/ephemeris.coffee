@@ -89,7 +89,7 @@ class Ephemeris
           "0": "   longitude"
           "3": " speed"
         json = JSON.parse data
-        [once, idx] = [false, 0]
+        idx = 0
         [objs, rows, colors] = [[], [" ", "what"], []]
         for i, group of json
           if i is "1" or i is "2"
@@ -108,17 +108,17 @@ class Ephemeris
                   when "0"
                     objs[idx][label] = degrees.lon(val).rep('str') + rpad
                   when "3"
+                    rows.push '~' if idx is 0
+                    objs[idx]['~'] = if val < 0 then '℞'.red else ''
                     # precision, rounding and alignment (if negative not <= -10?)
                     val = val.toFixed 3
                     val = (if val < 0 or val >=10  then val else " " + val)
                     objs[idx][label] = val + rpad
                   else objs[idx][label] = val + rpad
+                rows.push labels[key] if idx is 0
               idx++
-              unless once
-                rows = _.union rows, _.map _.keys(it), (key) -> labels[key]
-                once = true
         objs = _.sortBy objs, (obj) -> obj[labels['0']] # longitude-sorted
-        colors.push "red" for row in rows
+        colors.push "white" for row in rows
         stream.write cliff.stringifyObjectRows objs, rows, colors
         stream.write "\n\n"
     else if _.include ["inspect", "indent"], @settings.out
