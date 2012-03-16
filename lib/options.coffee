@@ -51,10 +51,10 @@ class Options
     @merge.out = argv.o if argv.o? and not (argv.o instanceof Boolean)
     @merge.out = argv.out if argv.out? and not (argv.out instanceof Boolean) # spelled-out wins
     unless @merge.out?
-      @merge.out = ["json", "inspect"] # the cli default
+      @merge.out = "phase" # the cli default (use Array for a Massagist sequence)
     else
       # NOTE: this could be simplified, but is it worth the bother?
-      any_equal = if @merge.out.match /=/ then true else false
+      any_equal = if @merge.out.match /\=/ then true else false
       if @merge.out.match /,/ # comma-separated sequence (= Array)
         @merge.out = @merge.out.split ","
       else if any_equal
@@ -63,7 +63,7 @@ class Options
       if any_equal
         # if there are any options (for a single massage or several in a row)
         @merge.out = _.map @merge.out, (massagist) ->
-          if massagist.match /=/
+          if massagist.match /\=/
             out = massagist.split "="
             if out[1].match /^{/
               # can take json options as long as it's valid json
@@ -75,7 +75,8 @@ class Options
                 console.log "Massagist '#{out[0]}' has invalid json option: #{out[1]}"
                 process.exit(1)
             else
-              # assuming string options (e.g. intent="\t") - compensating for strange \t behavior
+              # handling string (e.g. eden -o json,indent="\t") - compensate for
+              # what appears to be strange \t behavior...
               return [out[0], String(out[1]).replace(/\\t/g, "\t")]
           else
             return massagist

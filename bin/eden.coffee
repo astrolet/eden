@@ -1,12 +1,9 @@
 #!/usr/bin/env coffee
 
-require.paths.unshift __dirname + "/../lib"
-require.paths.unshift __dirname + "/../node_modules"
-
-opts    = require("options")
+opts    = require("../lib/options")
 inspect = require("eyes").inspector({styles: {all: "magenta"}})
 _       = require("massagist")._
-Ephemeris = require("ephemeris")
+Ephemeris = require("../lib/ephemeris")
 
 output = (ephemeris, massage) ->
   if opts.verbose

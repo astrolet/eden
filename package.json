@@ -1,7 +1,7 @@
 { "name": "eden"
 , "description": "ephemeris for humans on node"
 , "keywords": [ "astrology", "ephemeris", "cli" ]
-, "version": "0.0.1-9"
+, "version": "0.0.2-1"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
@@ -9,7 +9,7 @@
   }
 , "bugs":
   { "mail": "support@astrolet.net"
-  , "web" : "https://github.com/astrolet/eden/issues"
+  , "url" : "https://github.com/astrolet/eden/issues"
   }
 , "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)"
 , "contributors": []
@@ -20,13 +20,13 @@
   }
 , "main": "eden"
 , "dependencies":
-  { "coffee-script": "~1.0.1"
-  , "lin": ">= 0.0.1-4"
-  , "precious": ">= 0.0.1-4"
-  , "gravity": "*"
-  , "optimist": "~0.1.9"
-  , "eyes": "~0.1.6"
+  { "coffee-script": "1.2.x"
+  , "lin": "*"
+  , "precious": "*"
+  , "optimist": "*"
+  , "eyes": "*"
   , "massagist": "*"
+  , "cliff": "*"
   }
 , "devDependencies":
   { "docco": "*"
@@ -37,7 +37,7 @@
 , "scripts": { "postinstall": "sh ./scripts/install-message.sh" }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
-, "engines" : { "node" : "0.4" }
+, "engines" : { "node" : "0.6.x", "npm": "1.1.x" }
 , "licenses":
   [ { "type": "Unlicense"
     , "url" : "http://unlicense.org/"
