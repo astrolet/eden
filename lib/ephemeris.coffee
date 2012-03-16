@@ -3,11 +3,15 @@ util    = require("util")
 spawn   = require("child_process").spawn
 Massage = require("massagist").Massage
 _       = require("massagist")._
-# FFI     = require("node-ffi/lib/ffi")
+cliff   = require("cliff")
+degrees = require("lin").degrees
+# FFI   = require("node-ffi/lib/ffi")
+
 
 class Ephemeris
 
   # @settings.out can be:
+  # "tab" (should become eden's default), uses Your CLI Formatting Friend
   # "json" (is python's default)
   # "print" (python's print)
   # "pprint" (python's pretty-substitutes swe labels)
@@ -21,7 +25,7 @@ class Ephemeris
     "time": null
     "geo": {"lat": null, "lon": null}
     "dms": false
-    "stuff": [ [0, 3], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15], [136199, 7066, 50000, 90377, 20000, 128] ]
+    "stuff": [ [0, 3], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20], [136199, 7066, 50000, 90377, 20000] ]
     "houses": "K"
 
   bindings:
@@ -75,6 +79,49 @@ class Ephemeris
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
+    else if @settings.out is "phase"
+      # this is a bit ugly because it's easier to not change the precious output
+      # will need to at least add an input method to lin's itemerge (soon)
+      ensemble = new (require "lin").Ensemble
+      ephemeris.stdout.on "data", (data) ->
+        rpad = ' ' # pad on the right of each column (the values)
+        labels =
+          "0": "   longitude"
+          "3": " speed"
+        json = JSON.parse data
+        idx = 0
+        [objs, rows, colors] = [[], [" ", "what"], []]
+        for i, group of json
+          if i is "1" or i is "2"
+            for id, it of group
+              sid = if i is "2" then "#{10000 + new Number(id)}" else id
+              item = ensemble.sid sid
+              [lead, what] = [(if i is "2" then "+" else ""), id]
+              if item.get('id') isnt '?'
+                lead = item.get('u').white if item.get('u')?
+                what = item.get('name')
+              objs.push
+                " ": lead + rpad
+                "what": what + rpad
+              for key, val of it
+                label = labels[key] ? key
+                switch key
+                  when "0"
+                    objs[idx][label] = degrees.lon(val).rep('str') + rpad
+                  when "3"
+                    rows.push '~' if idx is 0
+                    objs[idx]['~'] = if val < 0 then '℞'.red else ''
+                    # precision, rounding and alignment (if negative not <= -10?)
+                    val = val.toFixed 3
+                    val = (if val < 0 or val >=10  then val else " " + val)
+                    objs[idx][label] = val + rpad
+                  else objs[idx][label] = val + rpad
+                rows.push labels[key] if idx is 0
+              idx++
+        objs = _.sortBy objs, (obj) -> obj[labels['0']] # longitude-sorted
+        colors.push "white" for row in rows
+        stream.write cliff.stringifyObjectRows objs, rows, colors
+        stream.write "\n\n"
     else if _.include ["inspect", "indent"], @settings.out
       massage = new Massage ["json", @settings.out]
       massage.pipe ephemeris.stdout, stream, "ascii"
