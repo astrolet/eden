@@ -54,7 +54,7 @@ class Options
       @merge.out = "phase" # the cli default (use Array for a Massagist sequence)
     else
       # NOTE: this could be simplified, but is it worth the bother?
-      any_equal = if @merge.out.match /=/ then true else false
+      any_equal = if @merge.out.match /\=/ then true else false
       if @merge.out.match /,/ # comma-separated sequence (= Array)
         @merge.out = @merge.out.split ","
       else if any_equal
@@ -63,7 +63,7 @@ class Options
       if any_equal
         # if there are any options (for a single massage or several in a row)
         @merge.out = _.map @merge.out, (massagist) ->
-          if massagist.match /=/
+          if massagist.match /\=/
             out = massagist.split "="
             if out[1].match /^{/
               # can take json options as long as it's valid json

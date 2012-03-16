@@ -20,11 +20,11 @@
   }
 , "main": "eden"
 , "dependencies":
-  { "coffee-script": "~1.0.1"
-  , "lin": ">= 0.0.1-4"
-  , "precious": ">= 0.0.1-4"
-  , "optimist": "~0.1.9"
-  , "eyes": "~0.1.6"
+  { "coffee-script": "1.2.x"
+  , "lin": "*"
+  , "precious": "*"
+  , "optimist": "*"
+  , "eyes": "*"
   , "massagist": "*"
   , "cliff": "*"
   }
