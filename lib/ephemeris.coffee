@@ -94,7 +94,8 @@ class Ephemeris
         for i, group of json
           if i is "1" or i is "2"
             for id, it of group
-              item = ensemble.sid id
+              sid = if i is "2" then "#{10000 + new Number(id)}" else id
+              item = ensemble.sid sid
               [lead, what] = [(if i is "2" then "+" else ""), id]
               if item.get('id') isnt '?'
                 lead = item.get('u').white if item.get('u')?
