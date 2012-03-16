@@ -1,7 +1,7 @@
 { "name": "eden"
 , "description": "ephemeris for humans on node"
 , "keywords": [ "astrology", "ephemeris", "cli" ]
-, "version": "0.0.1-9"
+, "version": "0.0.2-1"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
