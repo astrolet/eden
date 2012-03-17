@@ -1,5 +1,3 @@
-require.paths.unshift "#{__dirname}/node_modules"
-
 fs = require 'fs'
 docs = "#{__dirname}/docs"
 
@@ -25,7 +23,7 @@ runCommand = (name, args) ->
     proc.on 'exit', (status) -> process.exit(1) if status != 0
 
 
-task 'assets:watch', 'Watch source files and build docs', (options) ->
+task 'assets:watch', 'Broken: watch source files and build docs', (options) ->
 
   watchStuff = (callback) ->
     watch_rate = 100 #ms
