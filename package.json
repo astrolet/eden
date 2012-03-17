@@ -30,6 +30,7 @@
   }
 , "devDependencies":
   { "docco": "*"
+  , "ronn": "*"
   , "vows": "*"
   , "async": "*"
   , "watch-tree": "*"
