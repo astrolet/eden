@@ -1,7 +1,7 @@
 { "name": "eden"
-, "description": "ephemeris for humans on node"
-, "keywords": [ "astrology", "ephemeris", "cli" ]
-, "version": "0.0.2-1"
+, "description": "this ephemeris does essentially node"
+, "keywords": [ "astrology", "ephemeris", "stream", "cli" ]
+, "version": "0.0.3-1"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
@@ -9,7 +9,7 @@
   }
 , "bugs":
   { "mail": "support@astrolet.net"
-  , "url" : "https://github.com/astrolet/eden/issues"
+  , "url" : "https://www.pivotaltracker.com/projects/203533"
   }
 , "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)"
 , "contributors": []
@@ -30,25 +30,14 @@
   }
 , "devDependencies":
   { "docco": "*"
+  , "ronn": "*"
   , "vows": "*"
   , "async": "*"
   , "watch-tree": "*"
   }
-, "scripts": { "postinstall": "sh ./scripts/install-message.sh" }
+, "scripts": { "postinstall": "sh ./bin/install-message.sh" }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
 , "engines" : { "node" : "0.6.x", "npm": "1.1.x" }
-, "licenses":
-  [ { "type": "Unlicense"
-    , "url" : "http://unlicense.org/"
-    }
-    ,
-    { "type": "GPL"
-    , "url" : "http://github.com/astrolet/eden/raw/master/LICENSE"
-    }
-    ,
-    { "type": "Swiss Ephemeris"
-    , "url" : "http://github.com/astrolet/eden/raw/master/LICENSE"
-    }
-  ]
+, "licenses": [ { "type": "Unlicense", "url" : "http://unlicense.org/" } ]
 }

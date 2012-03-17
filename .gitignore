@@ -25,9 +25,5 @@ pids
 logs
 results
 
-build
-swe/src/*.o
-lib/swe.dylib
-
 # Tools
 .settings.xml
