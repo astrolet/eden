@@ -24,10 +24,10 @@
   { "coffee-script": "~1.0.1"
   , "lin": "*"
   , "optimist": "~0.1.9"
-  , "eyes": "~0.1.6"
+  , "eyes": "*"
   , "gravity": "*"
   , "massagist": "*"
-  , "node-ffi": "https://github.com/simplegeo/node-ffi/tarball/master"
+  , "node-ffi": "*"
   }
 , "devDependencies":
   { "ronn": "*"
