@@ -1,6 +1,6 @@
 { "name": "eden"
-, "description": "ephemeris for humans on node"
-, "keywords": [ "astrology", "ephemeris", "cli" ]
+, "description": "this ephemeris does essentially node"
+, "keywords": [ "astrology", "ephemeris", "stream", "cli" ]
 , "version": "0.0.2-1"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
@@ -9,7 +9,7 @@
   }
 , "bugs":
   { "mail": "support@astrolet.net"
-  , "url" : "https://github.com/astrolet/eden/issues"
+  , "url" : "https://www.pivotaltracker.com/projects/203533"
   }
 , "author": "Orlin M Bozhinov <orlin@astrolet.net> (http://soundsapiens.com)"
 , "contributors": []
