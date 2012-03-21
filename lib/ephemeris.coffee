@@ -29,7 +29,7 @@ class Ephemeris
              , [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20]
              , [136199, 7066, 50000, 90377, 20000]
              ]
-    "houses": "K"
+    "houses": "O"
 
   constructor: (@specifics = {}) ->
     @settings = _.allFurther(@defaults, @specifics)
