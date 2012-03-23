@@ -59,12 +59,11 @@ class Ephemeris
       # This needs to be part of treats / massage as it's a json data collection.
       # Futhermore: this is just about data, not presentation.
       # The presentation code will be moved to the new "phase".
+      settings = @settings # so it can be passed to points as options
       ephemeris.stdout.on "data", (precious) ->
-        points = new Points [], {data: JSON.parse precious}
+        points = new Points [], {data: JSON.parse(precious), settings: settings}
         json = points.toJSON()
         if json.length > 0
-          colors = []
-          colors.push "white" for count in [0.._.size(json[0])]
           (colors ?= []).push "white" for count in [0.._.size(json[0])]
           stream.write cliff.stringifyObjectRows json, _.keys(json[0]), colors
         else stream.write "Given no data."
