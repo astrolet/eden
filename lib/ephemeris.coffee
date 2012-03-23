@@ -5,6 +5,7 @@ Massage = require("massagist").Massage
 _       = require("massagist")._
 cliff   = require("cliff")
 degrees = require("lin").degrees
+Points  = require("lin").Points
 
 
 class Ephemeris
@@ -25,7 +26,7 @@ class Ephemeris
     "time": null
     "geo": {"lat": null, "lon": null}
     "dms": false
-    "stuff": [ [0, 3]
+    "stuff": [ [0, 1, 3]
              , [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20]
              , [136199, 7066, 50000, 90377, 20000]
              ]
@@ -53,6 +54,21 @@ class Ephemeris
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
+    else if @settings.out is "points"
+      # NOTE: temporarily here for deveopment of precious points import.
+      # This needs to be part of treats / massage as it's a json data collection.
+      # Futhermore: this is just about data, not presentation.
+      # The presentation code will be moved to the new "phase".
+      ephemeris.stdout.on "data", (precious) ->
+        points = new Points [], {data: JSON.parse precious}
+        json = points.toJSON()
+        if json.length > 0
+          colors = []
+          colors.push "white" for count in [0.._.size(json[0])]
+          (colors ?= []).push "white" for count in [0.._.size(json[0])]
+          stream.write cliff.stringifyObjectRows json, _.keys(json[0]), colors
+        else stream.write "Given no data."
+        stream.write "\n\n"
     else if @settings.out is "phase"
       # this is a bit ugly because it's easier to not change the precious output
       # will need to at least add an input method to lin's itemerge (soon)
@@ -78,19 +94,20 @@ class Ephemeris
                 " ": lead + rpad
                 "what": what + rpad
               for key, val of it
-                label = labels[key] ? key
-                switch key
-                  when "0"
-                    objs[idx][label] = degrees.lon(val).rep('str') + rpad
-                  when "3"
-                    rows.push '~' if idx is 0
-                    objs[idx]['~'] = if val < 0 then '℞'.red else ''
-                    # precision, rounding and alignment (if negative not <= -10?)
-                    val = val.toFixed 3
-                    val = (if val < 0 or val >=10  then val else " " + val)
-                    objs[idx][label] = val + rpad
-                  else objs[idx][label] = val + rpad
-                rows.push labels[key] if idx is 0
+                if key is '0' or key is '3' # process just the longitude / speed
+                  label = labels[key] ? key
+                  switch key
+                    when "0"
+                      objs[idx][label] = degrees.lon(val).rep('str') + rpad
+                    when "3"
+                      rows.push '~' if idx is 0
+                      objs[idx]['~'] = if val < 0 then '℞'.red else ''
+                      # precision, rounding and alignment (if negative not <= -10?)
+                      val = val.toFixed 3
+                      val = (if val < 0 or val >=10  then val else " " + val)
+                      objs[idx][label] = val + rpad
+                    else objs[idx][label] = val + rpad
+                  rows.push labels[key] if idx is 0
               idx++
         objs = _.sortBy objs, (obj) -> obj[labels['0']] # longitude-sorted
         colors.push "white" for row in rows
