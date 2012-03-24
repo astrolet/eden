@@ -88,7 +88,7 @@ class Ephemeris
               , act: true
               , val: (its) ->
                 degrees.lon(its.lon).rep('str')
-              , sort: 1
+              , sort: "lon"
               }
             , { key: "~"
               , req: ["day_lon"]
@@ -136,20 +136,39 @@ class Ephemeris
             show.push item
           table = show
 
-          # The titles and their color.
+          # The out-values, titles and their color.
+          out = []
           titles = _.pluck table, 'key'
           (color ?= []).push "white" for count in [0..table.length]
 
+          # Add the representations for better readability.
+          lon = degrees.lon 0 # just for representation symbols
+          for i in [0..11]
+            json.push
+              marker: true
+              id: lon.representations[i]
+              lon: i * 30
+
           # Process, sort and write to the stream.
-          out = []
           for i, item of json
-            out.push {}
+            out.push { order: [] }
             for col in table
               it = ensemble.id item.id
               piece = col.val item, it
               piece += rpad if col.key isnt '~'
               out[i][col.key] = piece
-          out = _.sortBy out, (obj) -> obj['   longitude']
+              if col.sort? and not item.marker
+                out[i].order.push Number(item[col.sort])
+            # Output markers for each representation.
+            if item.marker is true
+              # TODO: append `" topical % fortune"` house numbers to `what`.
+              what = out[i]['what']
+              mark = "#{item.lon}\u00B0"
+              mark = ' ' + mark for count in [0..(5 - mark.length)]
+              out[i].order.push Number(item.lon)
+              out[i]['what'] = what.green
+              out[i]['   longitude'] = mark.green
+          out = _.sortBy out, (obj) -> obj['order'][0]
           stream.write cliff.stringifyObjectRows out, titles, color
 
         else stream.write "Given no data."
