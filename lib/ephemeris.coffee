@@ -51,70 +51,107 @@ class Ephemeris
     ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
                               , { cwd: __dirname + "/../node_modules/precious/lib" }
     treats = @settings.out if @settings.out instanceof Array and not treats?
+
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
-    else if @settings.out is "points"
-      # NOTE: temporarily here for deveopment of precious points import.
-      # This needs to be part of treats / massage as it's a json data collection.
-      # Futhermore: this is just about data, not presentation.
-      # The presentation code will be moved to the new "phase".
+
+    else if @settings.out is "phase"
+      # TODO: add points to the treats / massage.
+      # This is just points presentation,
+      # and it could be done with massage as well.
       settings = @settings # so it can be passed to points as options
       ephemeris.stdout.on "data", (precious) ->
         points = new Points [], {data: JSON.parse(precious), settings: settings}
         json = points.toJSON()
+
+        # It's just about output format from here on.
         if json.length > 0
-          (colors ?= []).push "white" for count in [0.._.size(json[0])]
-          stream.write cliff.stringifyObjectRows json, _.keys(json[0]), colors
+          ensemble = new (require "lin").Ensemble
+          rpad = ' ' # right-padding for better readability
+          table =
+            [ { key: " "
+              , req: ["id", "sid"]
+              , act: true
+              , val: (its, it) ->
+                lead = if its.sid >= 10000 then "+" else ""
+                if it.get('u')? then it.get('u').white else lead
+              }
+            , { key: "what"
+              , req: ["id"]
+              , act: true
+              , val: (its, it) ->
+                if it.get('id') is '?' then its.id else it.get 'name'
+              }
+            , { key: "   longitude"
+              , req: ["lon"]
+              , act: true
+              , val: (its) ->
+                degrees.lon(its.lon).rep('str')
+              , sort: 1
+              }
+            , { key: "~"
+              , req: ["day_lon"]
+              , act: true
+              , val: (its) ->
+                if its.day_lon < 0 then '℞'.red else ''
+              }
+            , { key: " speed"
+              , req: ["day_lon"]
+              , act: true
+              , val: (its) ->
+                if its.day_lon?
+                  front = ('' if its.day_lon < 0 or its.day_lon >= 10) ? ' '
+                  front + its.day_lon.toFixed 3
+                else ''
+              }
+            , { key: "  latitude"
+              , req: ["lat"]
+              , act: false
+              , val: (its) ->
+                degrees.of(its.lat).str()
+              }
+            , { key: "reason"
+              , req: ["re"]
+              , act: false
+              , val: (its) ->
+                its.re
+              }
+            ]
+
+          # Reconsider what will be shown.
+          show = []
+          for item in table
+            # Don't show inactive stuff.
+            if item.act isnt true then continue
+            # Don't work with columns all of whose values are entirely the same.
+            if 1 is _.size _.uniq _.pluck json, item.req[0] then continue
+            show.push item
+          table = show
+
+          # The titles and their color.
+          titles = _.pluck table, 'key'
+          (color ?= []).push "white" for count in [0..table.length]
+
+          # Process, sort and write to the stream.
+          out = []
+          for i, item of json
+            out.push {}
+            for col in table
+              it = ensemble.id item.id
+              piece = col.val item, it
+              piece += rpad if col.key isnt '~'
+              out[i][col.key] = piece
+          out = _.sortBy out, (obj) -> obj['   longitude']
+          stream.write cliff.stringifyObjectRows out, titles, color
+
         else stream.write "Given no data."
         stream.write "\n\n"
-    else if @settings.out is "phase"
-      # this is a bit ugly because it's easier to not change the precious output
-      # will need to at least add an input method to lin's itemerge (soon)
-      ensemble = new (require "lin").Ensemble
-      ephemeris.stdout.on "data", (data) ->
-        rpad = ' ' # pad on the right of each column (the values)
-        labels =
-          "0": "   longitude"
-          "3": " speed"
-        json = JSON.parse data
-        idx = 0
-        [objs, rows, colors] = [[], [" ", "what"], []]
-        for i, group of json
-          if i is "1" or i is "2"
-            for id, it of group
-              sid = if i is "2" then "#{10000 + new Number(id)}" else id
-              item = ensemble.sid sid
-              [lead, what] = [(if i is "2" then "+" else ""), id]
-              if item.get('id') isnt '?'
-                lead = item.get('u').white if item.get('u')?
-                what = item.get('name')
-              objs.push
-                " ": lead + rpad
-                "what": what + rpad
-              for key, val of it
-                if key is '0' or key is '3' # process just the longitude / speed
-                  label = labels[key] ? key
-                  switch key
-                    when "0"
-                      objs[idx][label] = degrees.lon(val).rep('str') + rpad
-                    when "3"
-                      rows.push '~' if idx is 0
-                      objs[idx]['~'] = if val < 0 then '℞'.red else ''
-                      # precision, rounding and alignment (if negative not <= -10?)
-                      val = val.toFixed 3
-                      val = (if val < 0 or val >=10  then val else " " + val)
-                      objs[idx][label] = val + rpad
-                    else objs[idx][label] = val + rpad
-                  rows.push labels[key] if idx is 0
-              idx++
-        objs = _.sortBy objs, (obj) -> obj[labels['0']] # longitude-sorted
-        colors.push "white" for row in rows
-        stream.write cliff.stringifyObjectRows objs, rows, colors
-        stream.write "\n\n"
+
     else if _.include ["inspect", "indent"], @settings.out
       massage = new Massage ["json", @settings.out]
       massage.pipe ephemeris.stdout, stream, "ascii"
+
     else
       ephemeris.stdout.pipe stream
 
