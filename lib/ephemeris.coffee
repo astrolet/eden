@@ -26,7 +26,7 @@ class Ephemeris
     "time": null
     "geo": {"lat": null, "lon": null}
     "dms": false
-    "stuff": [ [0, 1, 3]
+    "stuff": [ [0, 1, 2, 3]
              , [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20]
              , [136199, 7066, 50000, 90377, 20000]
              ]
@@ -111,6 +111,13 @@ class Ephemeris
               , val: (its) ->
                 degrees.of(its.lat).str()
               }
+            , { key: "distance"
+              , req: ["dau"]
+              , act: true
+              , val: (its) ->
+                return '' unless _.isNumber its.dau
+                its.dau.toFixed(4 - String(Math.floor its.dau).length) + " AU"
+              }
             , { key: "reason"
               , req: ["re"]
               , act: false
@@ -123,9 +130,9 @@ class Ephemeris
           show = []
           for item in table
             # Don't show inactive stuff.
-            if item.act isnt true then continue
+            continue if item.act isnt true
             # Don't work with columns all of whose values are entirely the same.
-            if 1 is _.size _.uniq _.pluck json, item.req[0] then continue
+            continue if 1 is _.size _.uniq _.pluck json, item.req[0]
             show.push item
           table = show
 
