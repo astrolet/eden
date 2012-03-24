@@ -60,6 +60,7 @@ class Ephemeris
       # TODO: add points to the treats / massage.
       # This is just points presentation,
       # and it could be done with massage as well.
+      # Or later with a view.
       settings = @settings # so it can be passed to points as options
       ephemeris.stdout.on "data", (precious) ->
         points = new Points [], {data: JSON.parse(precious), settings: settings}
@@ -68,6 +69,7 @@ class Ephemeris
         # It's just about output format from here on.
         if json.length > 0
           ensemble = new (require "lin").Ensemble
+          longitude = "   longitude" # the name cliff label
           rpad = ' ' # right-padding for better readability
           table =
             [ { key: " "
@@ -83,7 +85,7 @@ class Ephemeris
               , val: (its, it) ->
                 if it.get('id') is '?' then its.id else it.get 'name'
               }
-            , { key: "   longitude"
+            , { key: longitude
               , req: ["lon"]
               , act: true
               , val: (its) ->
@@ -149,7 +151,7 @@ class Ephemeris
               id: lon.representations[i]
               lon: i * 30
 
-          # Process, sort and write to the stream.
+          # Process and sort.
           for i, item of json
             out.push { order: [] }
             for col in table
@@ -159,6 +161,7 @@ class Ephemeris
               out[i][col.key] = piece
               if col.sort? and not item.marker
                 out[i].order.push Number(item[col.sort])
+              out[i].id = item.id # for post-processing
             # Output markers for each representation.
             if item.marker is true
               # TODO: append `" topical % fortune"` house numbers to `what`.
@@ -167,9 +170,26 @@ class Ephemeris
               mark = ' ' + mark for count in [0..(5 - mark.length)]
               out[i].order.push Number(item.lon)
               out[i]['what'] = what.green
-              out[i]['   longitude'] = mark.green
+              out[i][longitude] = mark.green
           out = _.sortBy out, (obj) -> obj['order'][0]
-          stream.write cliff.stringifyObjectRows out, titles, color
+
+          # Reduce and write to the stream.
+          [seq, prev] = [{}, {}]
+          for i, item of out
+            out[i].extra = false # innocent by default (i.e. not guilty)
+            # TODO: this shoud be checking for hidden longitude degrees, instead
+            if prev[longitude] isnt item[longitude]
+              if _.size(seq) > 1
+                # One or more of the angles can be found in this sequence.
+                if (_.union ['AS', 'MC', 'DS', 'IC'], _.keys seq).length >= 1
+                  for id, idx of seq
+                    # Makes any house extra.
+                    out[idx].extra = true if id[0] is 'H'
+              seq = {} # reset the sequence
+            seq["#{item.id}"] = i
+            prev = item
+          outer = _.filter out, (final) -> final.extra is false
+          stream.write cliff.stringifyObjectRows outer, titles, color
 
         else stream.write "Given no data."
         stream.write "\n\n"
