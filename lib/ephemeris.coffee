@@ -30,7 +30,7 @@ class Ephemeris
              , [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20]
              , [136199, 7066, 50000, 90377, 20000]
              ]
-    "houses": "O"
+    "houses": "W"
 
   constructor: (@specifics = {}) ->
     @settings = _.allFurther(@defaults, @specifics)
@@ -168,25 +168,55 @@ class Ephemeris
               what = out[i]['what']
               mark = "#{item.lon}\u00B0"
               mark = ' ' + mark for count in [0..(5 - mark.length)]
+              out[i].marker = true
               out[i].order.push Number(item.lon)
               out[i]['what'] = what.green
               out[i][longitude] = mark.green
+          out = _.sortBy out, (obj) -> obj['order'][0]
+
+          # TODO: an ugly hack - resolve this technical debt!
+          # It all comes from lon 0 being 360.  Perhaps a 2nd
+          # special kind of longitude should be further sub-classed?
+          for idx in [(out.length-1)..0]
+            if out[idx].order[0] is 360 then out[idx].order[0] = 0 else break
+          # Sort again, because of the above...
           out = _.sortBy out, (obj) -> obj['order'][0]
 
           # Reduce and write to the stream.
           [seq, prev] = [{}, {}]
           for i, item of out
             out[i].extra = false # innocent by default (i.e. not guilty)
-            # TODO: this shoud be checking for hidden longitude degrees, instead
-            if prev[longitude] isnt item[longitude]
+            # Instead of `if prev[longitude] isnt item[longitude]`.
+            # Note: would be nice if we didn't hardcode `order[0]`
+            # to be longitude for sure (technical debt).
+            # It is used all over the place!
+            if prev.order?[0] isnt item.order[0]
+              # console.log item.what + ' ' + item.order[0]
               if _.size(seq) > 1
+                angled = topical = fortune = false
                 # One or more of the angles can be found in this sequence.
                 if (_.union ['AS', 'MC', 'DS', 'IC'], _.keys seq).length >= 1
-                  for id, idx of seq
-                    # Makes any house extra.
-                    out[idx].extra = true if id[0] is 'H'
-              seq = {} # reset the sequence
+                  angled = true
+                for id, idx of seq
+                  # Makes any house extra.
+                  out[idx].extra = true if id[0] is 'H' and angled is true
+                  # Topical & Fortune Houses.
+                  if id[0] is 'T' or id[0] is 'F'
+                    out[idx].extra = true
+                    switch id[0]
+                      when 'T' then topical = id.substr 1
+                      when 'F' then fortune = id.substr 1
+                if topical isnt false
+                  out[i_mark].what += " #{topical}".white
+                  if fortune isnt false
+                    out[i_mark].what += " / #{fortune}".white
+              # Reset the sequence after a longitude change is processed.
+              seq = {}
+            # From here on, there is always at least one one id in the sequence.
             seq["#{item.id}"] = i
+            # It's mportant to set the marker index after processing.
+            # Otherwise, sometimes the next marker steals the topics.
+            i_mark = i if item.marker is true
             prev = item
           outer = _.filter out, (final) -> final.extra is false
           stream.write cliff.stringifyObjectRows outer, titles, color
