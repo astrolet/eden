@@ -122,7 +122,7 @@ class Ephemeris
               }
             , { key: "reason"
               , req: ["re"]
-              , act: false
+              , act: true
               , val: (its) ->
                 its.re
               }
@@ -150,6 +150,7 @@ class Ephemeris
               marker: true
               id: lon.representations[i]
               lon: i * 30
+              re: "zodiac".green
 
           # Process and sort.
           for i, item of json
