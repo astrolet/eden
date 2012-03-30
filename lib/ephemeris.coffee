@@ -6,6 +6,7 @@ _       = require("massagist")._
 cliff   = require("cliff")
 degrees = require("lin").degrees
 Points  = require("lin").Points
+Stream  = require("stream").Stream
 
 
 class Ephemeris
@@ -46,11 +47,39 @@ class Ephemeris
     @settings.geo.lon = @gaia.lon
     @settings.ut = @gaia.ut
 
+    @
+
 
   # A way to change just the output format, with possible method-chaining.
   out: (treats) ->
     @settings.out = treats
     @
+
+  # Just for processing *points* output as json (at this point).
+  # It also sets up the *points* json for *phase*.
+  pre: (stream) ->
+    process = true
+    points = "points"
+    becoming = "json"
+    # This is so that points can be passed as JSON to `Massage` further.
+    if _.isArray(@settings.out) and @settings.out[0] is points
+      [process, @settings.out[0]] = [points, becoming]
+    # Only the data changes for the following, `@settings.out` remains as is.
+    else if _.include [points, "phase"], @settings.out
+      process = points
+
+    # Specific processing (e.g. points), or else return the same stream
+    # without changing anything at all.
+    if process is points
+      restream = new Stream
+      settings = @settings # so it can be passed to points as options
+      stream.on "data", (precious) ->
+        points = new Points [], {data: JSON.parse(precious), settings: settings}
+        restream.emit "data", JSON.stringify(points.toJSON()) + "\n"
+      restream
+    else
+      stream
+
 
   run: (stream) ->
     ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
@@ -60,8 +89,9 @@ class Ephemeris
     # Massage can handle.  The `eden` (cli) sets up an `Array`
     # if `--out` is a comma-delimited sequence.
     if _.isArray @settings.out
+      streamin = @pre ephemeris.stdout
       massage = new Massage @settings.out
-      massage.pipe ephemeris.stdout, stream, "utf8"
+      massage.pipe streamin, stream, "utf8"
 
     # The rest of these are special cases or else straight output of whatever
     # precious returns.
@@ -76,14 +106,11 @@ class Ephemeris
     # The most readable output of `eden` and
     # the default in the context of cli usage.
     else if @settings.out is "phase"
-      # TODO: add points to the massage.
       # This is just points presentation,
-      # and it could be done with massage as well.
-      # Or later with a view.
-      settings = @settings # so it can be passed to points as options
-      ephemeris.stdout.on "data", (precious) ->
-        points = new Points [], {data: JSON.parse(precious), settings: settings}
-        json = points.toJSON()
+      # It could later be done with a `Backbone.View`.
+      streamin = @pre ephemeris.stdout
+      streamin.on "data", (data) ->
+        json = JSON.parse(data)
 
         # It's just about output format from here on.
         if json.length > 0
@@ -246,8 +273,8 @@ class Ephemeris
 
     # Unprocessed - straight from *precious*, whatever didn't get caught above.
     # For example `eden -o pprint`.
-    else
-      ephemeris.stdout.pipe stream
+    # Unless @pre modifies the data (points).
+    else @pre(ephemeris.stdout).pipe stream
 
     # Special (error) cases.
     ephemeris.stderr.on "data", (data) -> console.log data.toString("ascii")
