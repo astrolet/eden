@@ -55,7 +55,7 @@ class Ephemeris
     # and contains the massage (sequence). These instructions can also come
     # from `@settings.out` - provided it's an array.  The `eden` (cli)
     # uses `@settings.out` - `String` or `Array` if `--out` asks for a sequence.
-    treats = @settings.out if not treats? _.isArray @settings.out
+    treats = @settings.out if not treats? and _.isArray @settings.out
 
     # This is probably an array of massage steps, unless
     # a single step snuck in through the `treats` parameter.
