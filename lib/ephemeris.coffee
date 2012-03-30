@@ -62,7 +62,7 @@ class Ephemeris
     # It's expected that Massage can handle the value(s) of `treats`.
     if treats?
       massage = new Massage treats
-      massage.pipe ephemeris.stdout, stream, "ascii"
+      massage.pipe ephemeris.stdout, stream, "utf8"
 
     # The rest of these are special cases or else straight output of whatever
     # precious returns.
@@ -72,7 +72,7 @@ class Ephemeris
     # single massage steps for a more readable json output.
     else if _.include ["inspect", "indent"], @settings.out
       massage = new Massage ["json", @settings.out]
-      massage.pipe ephemeris.stdout, stream, "ascii"
+      massage.pipe ephemeris.stdout, stream, "utf8"
 
     # The most readable output of `eden` and
     # the default in the context of cli usage.
