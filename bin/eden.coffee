@@ -5,7 +5,7 @@ inspect = require("eyes").inspector({styles: {all: "magenta"}})
 _       = require("massagist")._
 Ephemeris = require("../lib/ephemeris")
 
-output = (ephemeris, massage) ->
+output = (ephemeris) ->
   if opts.verbose
     console.log "command: #{opts.command}"
     console.log "options:"
@@ -15,7 +15,7 @@ output = (ephemeris, massage) ->
     console.log ""
     console.log "results"
     console.log "======="
-  ephemeris.run(process.stdout, massage)
+  ephemeris.run process.stdout
   console.log ""
 
 switch opts.command

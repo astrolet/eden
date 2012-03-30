@@ -47,21 +47,20 @@ class Ephemeris
     @settings.ut = @gaia.ut
 
 
-  run: (stream, treats) ->
+  # A way to change just the output format, with possible method-chaining.
+  out: (treats) ->
+    @settings.out = treats
+    @
+
+  run: (stream) ->
     ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
                               , { cwd: __dirname + "/../node_modules/precious/lib" }
 
-    # The `treats` parameter means Massage will be applied to the data
-    # and contains the massage (sequence). These instructions can also come
-    # from `@settings.out` - provided it's an array.  The `eden` (cli)
-    # uses `@settings.out` - `String` or `Array` if `--out` asks for a sequence.
-    treats = @settings.out if not treats? and _.isArray @settings.out
-
-    # This is probably an array of massage steps, unless
-    # a single step snuck in through the `treats` parameter.
-    # It's expected that Massage can handle the value(s) of `treats`.
-    if treats?
-      massage = new Massage treats
+    # An array of massage steps.  Expected to be something valid that
+    # Massage can handle.  The `eden` (cli) sets up an `Array`
+    # if `--out` is a comma-delimited sequence.
+    if _.isArray @settings.out
+      massage = new Massage @settings.out
       massage.pipe ephemeris.stdout, stream, "utf8"
 
     # The rest of these are special cases or else straight output of whatever
@@ -77,7 +76,7 @@ class Ephemeris
     # The most readable output of `eden` and
     # the default in the context of cli usage.
     else if @settings.out is "phase"
-      # TODO: add points to the treats / massage.
+      # TODO: add points to the massage.
       # This is just points presentation,
       # and it could be done with massage as well.
       # Or later with a view.
