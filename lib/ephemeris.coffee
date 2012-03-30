@@ -50,12 +50,32 @@ class Ephemeris
   run: (stream, treats) ->
     ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
                               , { cwd: __dirname + "/../node_modules/precious/lib" }
-    treats = @settings.out if @settings.out instanceof Array and not treats?
 
+    # The `treats` parameter means Massage will be applied to the data
+    # and contains the massage (sequence). These instructions can also come
+    # from `@settings.out` - provided it's an array.  The `eden` (cli)
+    # uses `@settings.out` - `String` or `Array` if `--out` asks for a sequence.
+    treats = @settings.out if not treats? _.isArray @settings.out
+
+    # This is probably an array of massage steps, unless
+    # a single step snuck in through the `treats` parameter.
+    # It's expected that Massage can handle the value(s) of `treats`.
     if treats?
       massage = new Massage treats
       massage.pipe ephemeris.stdout, stream, "ascii"
 
+    # The rest of these are special cases or else straight output of whatever
+    # precious returns.
+
+    # These are the non-array single massage steps for which json is assumed
+    # being implied for a starting point.  Basically a list of valid,
+    # single massage steps for a more readable json output.
+    else if _.include ["inspect", "indent"], @settings.out
+      massage = new Massage ["json", @settings.out]
+      massage.pipe ephemeris.stdout, stream, "ascii"
+
+    # The most readable output of `eden` and
+    # the default in the context of cli usage.
     else if @settings.out is "phase"
       # TODO: add points to the treats / massage.
       # This is just points presentation,
@@ -225,18 +245,15 @@ class Ephemeris
         else stream.write "Given no data."
         stream.write "\n\n"
 
-    else if _.include ["inspect", "indent"], @settings.out
-      massage = new Massage ["json", @settings.out]
-      massage.pipe ephemeris.stdout, stream, "ascii"
-
+    # Unprocessed - straight from *precious*, whatever didn't get caught above.
+    # For example `eden -o pprint`.
     else
       ephemeris.stdout.pipe stream
 
-    ephemeris.stderr.on "data", (data) ->
-      console.log data.toString("ascii")
+    # Special (error) cases.
+    ephemeris.stderr.on "data", (data) -> console.log data.toString("ascii")
     ephemeris.on "exit", (code) ->
-      if code isnt 0
-        console.log 'ephemeris exited with code ' + code;
+      if code isnt 0 then console.log 'ephemeris exited with code ' + code;
 
 
 module.exports = Ephemeris
