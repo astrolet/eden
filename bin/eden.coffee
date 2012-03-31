@@ -1,29 +1,44 @@
 #!/usr/bin/env coffee
 
 opts    = require("../lib/options")
-inspect = require("eyes").inspector({styles: {all: "magenta"}})
-_       = require("massagist")._
-Ephemeris = require("../lib/ephemeris")
+inspect = require("eyes").inspector(
+                        { pretty: true
+                        , styles:
+                          { all: "green"
+                          , number: "magenta"
+                          , key: "bold"
+                          , string: "blue"
+                          }
+                        })
 
-output = (ephemeris) ->
+
+output = (context) ->
   if opts.verbose
-    console.log "command: #{opts.command}"
-    console.log "options:"
+    console.log "\noptions:"
     inspect opts.argv
-    console.log "request:"
-    inspect ephemeris.directions
+    console.log "command: #{opts.command}"
+    if context?
+      console.log "context:"
+      inspect ephemeris.settings
     console.log ""
-    console.log "results"
+    console.log "RESULTS"
     console.log "======="
-  ephemeris.run process.stdout
   console.log ""
 
+process.stdout.on "end", ->
+  process.stdout.write "\n"
+
+
 switch opts.command
+
   when "ephemeris"
+    Ephemeris = require("../lib/ephemeris")
     ephemeris = new Ephemeris opts.merge
-    output ephemeris
+    output ephemeris.settings
+    ephemeris.run process.stdout
 
   else
     console.log "Unknown command '#{opts.command}' has bypassed the options validator..."
     console.log "Nothing to do."
     process.exit(0)
+

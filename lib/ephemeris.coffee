@@ -13,10 +13,13 @@ class Ephemeris
 
   # @settings.out can be:
   # * phase (Your CLI Formatting Friend)
-  # * json (is python's default)
+  # * points (phase is based on it)
+  # * table (raw cliff output of points)
+  # * json (is python's precious default)
   # * print (python's print)
   # * pprint (python's pretty-substitutes swe labels)
   # * inspect (even prettier)
+  # * codedown (markdown code block html)
   # * see Massage for more...
   # These will become part of the help command / man and the gh-pages.
 
@@ -269,7 +272,8 @@ class Ephemeris
           stream.write cliff.stringifyObjectRows outer, titles, color
 
         else stream.write "Given no data."
-        stream.write "\n\n"
+        stream.write "\n"
+        stream.emit "end"
 
     # Unprocessed - straight from *precious*, whatever didn't get caught above.
     # For example `eden -o pprint`.
