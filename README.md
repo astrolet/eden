@@ -1,8 +1,8 @@
 eden -- (Eden -> en(o)de <- eNode)
 ==================================
 
-DESCRIPTION
------------
+SYNOPSIS
+--------
 
 <BR/>
 
@@ -13,10 +13,25 @@ _O, node after no eden!_<br/>
 _O, sweet this ephemeris on node is!_<br/>
 
 
+DESCRIPTION
+-----------
+
+Try the eden(1) command.
+So far it's just a tool for using the ephemeris library from a shell.
+
+
+INSTALL
+-------
+
+With the [npm](http://npmjs.org/) prerequisite, do:
+
+    npm install lin
+
+
 LICENSE
 -------
 
-This is [Unlicensed](http://unlicense.org) -
+This is [Unlicensed](UNLICENSE.html) -
 free and unencumbered public domain software.
 
 Note that some of the dependencies, namely precious(7),

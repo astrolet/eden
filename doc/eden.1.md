@@ -5,9 +5,15 @@ eden(1) -- Astrolet's command line interface ephemeris
 
 `eden` [<options>]
 
+
 ## DESCRIPTION
 
-It's a sweet kind of cli, that will be described soon...
+The `eden help` command will soon be implemented to provide details.
+
+Here is an `eden -e` example:
+
+![eden -e](images/e.png)
+
 
 ## NAVIGATE
 

@@ -74,6 +74,7 @@ task 'pages', "Build pages", ->
       (sh "cat UNLICENSE >> doc/UNLICENSE.md")
       (sh "ronn -stoc -5 doc/*.md")
       (sh "mv doc/*.html pages/")
+      (sh "cp -r doc/images pages/")
       (sh "rm doc/index.md")
       (sh "rm doc/UNLICENSE.md")
     ], callback
