@@ -273,7 +273,6 @@ class Ephemeris
 
         else stream.write "Given no data."
         stream.write "\n"
-        stream.emit "end"
 
     # Unprocessed - straight from *precious*, whatever didn't get caught above.
     # For example `eden -o pprint`.
@@ -284,6 +283,10 @@ class Ephemeris
     ephemeris.stderr.on "data", (data) -> console.log data.toString("ascii")
     ephemeris.on "exit", (code) ->
       if code isnt 0 then console.log 'ephemeris exited with code ' + code;
+
+    # Know when all the data has been got.
+    # Useful for post-formatting with trailing `\n` by the cli, for example.
+    ephemeris.stdout.on "end", -> stream.emit "end"
 
 
 module.exports = Ephemeris
