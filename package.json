@@ -18,7 +18,7 @@
   , "bin": "./bin"
   , "man": "./man"
   }
-, "main": "eden"
+, "main": "index"
 , "dependencies":
   { "coffee-script": "1.2.x"
   , "lin": "*"
