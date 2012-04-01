@@ -1,7 +1,7 @@
 { "name": "eden"
 , "description": "this ephemeris does essentially node"
 , "keywords": [ "astrology", "ephemeris", "stream", "cli" ]
-, "version": "0.0.3-1"
+, "version": "0.1.0-1"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
@@ -18,7 +18,7 @@
   , "bin": "./bin"
   , "man": "./man"
   }
-, "main": "eden"
+, "main": "index"
 , "dependencies":
   { "coffee-script": "1.2.x"
   , "lin": "*"
@@ -35,7 +35,7 @@
   , "async": "*"
   , "watch-tree": "*"
   }
-, "scripts": { "postinstall": "sh ./bin/install-message.sh" }
+, "scripts": {}
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
 , "engines" : { "node" : "0.6.x", "npm": "1.1.x" }

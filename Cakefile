@@ -22,6 +22,11 @@ runCommand = (name, args) ->
     proc.stdout.on 'data', (buffer) -> console.log buffer.toString()
     proc.on 'exit', (status) -> process.exit(1) if status != 0
 
+# shorthand to runCommand with
+command = (c, cb) ->
+  runCommand "sh", ["-c", c]
+  cb
+
 
 task 'assets:watch', 'Broken: watch source files and build docs', (options) ->
 
@@ -54,6 +59,14 @@ task 'assets:watch', 'Broken: watch source files and build docs', (options) ->
   ], (err) -> throw err if err
 
 
+# Literate programming for the coffee sources.
+task 'docs', "docco -- docs", ->
+  series [
+    sh "rm -rf #{docs}/"
+    command "find lib | grep .coffee | xargs docco"
+  ], (err) -> throw err if err
+
+
 # Build manuals / gh-pages almost exactly like https://github.com/josh/nack does
 
 task 'man', "Build manuals", ->
@@ -74,18 +87,16 @@ task 'pages', "Build pages", ->
       (sh "cat UNLICENSE >> doc/UNLICENSE.md")
       (sh "ronn -stoc -5 doc/*.md")
       (sh "mv doc/*.html pages/")
+      (sh "cp -r doc/images pages/")
       (sh "rm doc/index.md")
       (sh "rm doc/UNLICENSE.md")
     ], callback
 
-  buildAnnotations = (callback) ->
-    series [
-      (sh "docco lib/*.coffee")
-      # (sh "cp -r docs pages/annotations")
-    ], callback
-
   build = (callback) ->
-    parallel [buildMan, buildAnnotations], callback
+    parallel [
+      buildMan
+      (sh "cake docs && cp -r docs pages/annotations")
+      ], callback
 
   series [
     (sh "if [ ! -d pages ] ; then mkdir pages ; fi") # mkdir pages only if it doesn't exist
