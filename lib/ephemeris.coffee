@@ -123,58 +123,58 @@ class Ephemeris
           longitude = "   longitude" # the name cliff label
           rpad = ' ' # right-padding for better readability
           table =
-            [ { key: " "
-              , req: ["id", "sid"]
-              , act: true
-              , val: (its, it) ->
+            [ { "key": " "
+              , "req": ["id", "sid"]
+              , "act": true
+              , "val": (its, it) ->
                 lead = if its.sid >= 10000 then "+" else ""
                 if it.get('u')? then it.get('u').white else lead
               }
-            , { key: "what"
-              , req: ["id"]
-              , act: true
-              , val: (its, it) ->
+            , { "key": "what"
+              , "req": ["id"]
+              , "act": true
+              , "val": (its, it) ->
                 if it.get('id') is '?' then its.id else it.get 'name'
               }
-            , { key: longitude
-              , req: ["lon"]
-              , act: true
-              , val: (its) ->
+            , { "key": longitude
+              , "req": ["lon"]
+              , "act": true
+              , "val": (its) ->
                 degrees.lon(its.lon).rep('str')
               , sort: "lon"
               }
-            , { key: "~"
-              , req: ["day_lon"]
-              , act: true
-              , val: (its) ->
+            , { "key": "~"
+              , "req": ["day_lon"]
+              , "act": true
+              , "val": (its) ->
                 if its.day_lon < 0 then '℞'.red else ''
               }
-            , { key: " speed"
-              , req: ["day_lon"]
-              , act: true
-              , val: (its) ->
+            , { "key": " speed"
+              , "req": ["day_lon"]
+              , "act": true
+              , "val": (its) ->
                 if its.day_lon?
                   front = ('' if its.day_lon < 0 or its.day_lon >= 10) ? ' '
                   front + its.day_lon.toFixed 3
                 else ''
               }
-            , { key: "  latitude"
-              , req: ["lat"]
-              , act: false
-              , val: (its) ->
+            , { "key": "  latitude"
+              , "req": ["lat"]
+              , "act": false
+              , "val": (its) ->
                 degrees.of(its.lat).str()
               }
-            , { key: "distance"
-              , req: ["dau"]
-              , act: true
-              , val: (its) ->
+            , { "key": "distance"
+              , "req": ["dau"]
+              , "act": true
+              , "val": (its) ->
                 return '' unless _.isNumber its.dau
                 its.dau.toFixed(4 - String(Math.floor its.dau).length) + " AU"
               }
-            , { key: "reason"
-              , req: ["re"]
-              , act: true
-              , val: (its) ->
+            , { "key": "reason"
+              , "req": ["re"]
+              , "act": true
+              , "val": (its) ->
                 its.re
               }
             ]
