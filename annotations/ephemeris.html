@@ -86,58 +86,58 @@ It could later be done with a <code>Backbone.View</code>.</p>             </td> 
           <span class="nv">longitude = </span><span class="s2">&quot;   longitude&quot;</span> <span class="c1"># the name cliff label</span>
           <span class="nv">rpad = </span><span class="s1">&#39; &#39;</span> <span class="c1"># right-padding for better readability</span>
           <span class="nv">table =</span>
-            <span class="p">[</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot; &quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;sid&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its, it) -&gt;</span>
+            <span class="p">[</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot; &quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;sid&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its, it) -&gt;</span>
                 <span class="nv">lead = </span><span class="k">if</span> <span class="nx">its</span><span class="p">.</span><span class="nx">sid</span> <span class="o">&gt;=</span> <span class="mi">10000</span> <span class="k">then</span> <span class="s2">&quot;+&quot;</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
                 <span class="k">if</span> <span class="nx">it</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">)</span><span class="o">?</span> <span class="k">then</span> <span class="nx">it</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;u&#39;</span><span class="p">).</span><span class="nx">white</span> <span class="k">else</span> <span class="nx">lead</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot;what&quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its, it) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;what&quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its, it) -&gt;</span>
                 <span class="k">if</span> <span class="nx">it</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span> <span class="o">is</span> <span class="s1">&#39;?&#39;</span> <span class="k">then</span> <span class="nx">its</span><span class="p">.</span><span class="nx">id</span> <span class="k">else</span> <span class="nx">it</span><span class="p">.</span><span class="nx">get</span> <span class="s1">&#39;name&#39;</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="nx">longitude</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="nx">longitude</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;lon&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its) -&gt;</span>
                 <span class="nx">degrees</span><span class="p">.</span><span class="nx">lon</span><span class="p">(</span><span class="nx">its</span><span class="p">.</span><span class="nx">lon</span><span class="p">).</span><span class="nx">rep</span><span class="p">(</span><span class="s1">&#39;str&#39;</span><span class="p">)</span>
               <span class="p">,</span> <span class="nv">sort: </span><span class="s2">&quot;lon&quot;</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot;~&quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;day_lon&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;~&quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;day_lon&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its) -&gt;</span>
                 <span class="k">if</span> <span class="nx">its</span><span class="p">.</span><span class="nx">day_lon</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="s1">&#39;℞&#39;</span><span class="p">.</span><span class="nx">red</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot; speed&quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;day_lon&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot; speed&quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;day_lon&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its) -&gt;</span>
                 <span class="k">if</span> <span class="nx">its</span><span class="p">.</span><span class="nx">day_lon</span><span class="o">?</span>
                   <span class="nv">front = </span><span class="p">(</span><span class="s1">&#39;&#39;</span> <span class="k">if</span> <span class="nx">its</span><span class="p">.</span><span class="nx">day_lon</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">or</span> <span class="nx">its</span><span class="p">.</span><span class="nx">day_lon</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39; &#39;</span>
                   <span class="nx">front</span> <span class="o">+</span> <span class="nx">its</span><span class="p">.</span><span class="nx">day_lon</span><span class="p">.</span><span class="nx">toFixed</span> <span class="mi">3</span>
                 <span class="k">else</span> <span class="s1">&#39;&#39;</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot;  latitude&quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">false</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;  latitude&quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;lat&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">false</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its) -&gt;</span>
                 <span class="nx">degrees</span><span class="p">.</span><span class="k">of</span><span class="p">(</span><span class="nx">its</span><span class="p">.</span><span class="nx">lat</span><span class="p">).</span><span class="nx">str</span><span class="p">()</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot;distance&quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;dau&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;distance&quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;dau&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its) -&gt;</span>
                 <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="nx">unless</span> <span class="nx">_</span><span class="p">.</span><span class="nx">isNumber</span> <span class="nx">its</span><span class="p">.</span><span class="nx">dau</span>
                 <span class="nx">its</span><span class="p">.</span><span class="nx">dau</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">String</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span> <span class="nx">its</span><span class="p">.</span><span class="nx">dau</span><span class="p">).</span><span class="nx">length</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; AU&quot;</span>
               <span class="p">}</span>
-            <span class="p">,</span> <span class="p">{</span> <span class="nv">key: </span><span class="s2">&quot;reason&quot;</span>
-              <span class="p">,</span> <span class="nv">req: </span><span class="p">[</span><span class="s2">&quot;re&quot;</span><span class="p">]</span>
-              <span class="p">,</span> <span class="nv">act: </span><span class="kc">true</span>
-              <span class="p">,</span> <span class="nv">val: </span><span class="nf">(its) -&gt;</span>
+            <span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;key&quot;</span><span class="o">:</span> <span class="s2">&quot;reason&quot;</span>
+              <span class="p">,</span> <span class="s2">&quot;req&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;re&quot;</span><span class="p">]</span>
+              <span class="p">,</span> <span class="s2">&quot;act&quot;</span><span class="o">:</span> <span class="kc">true</span>
+              <span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="o">:</span> <span class="nf">(its) -&gt;</span>
                 <span class="nx">its</span><span class="p">.</span><span class="nx">re</span>
               <span class="p">}</span>
             <span class="p">]</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Reconsider what will be shown.</p>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nv">show = </span><span class="p">[]</span>
