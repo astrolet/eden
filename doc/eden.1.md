@@ -12,7 +12,7 @@ The `eden help` command will soon be implemented to provide details.
 
 Here is an `eden -e` example:
 
-![eden -e](./images/e.png)
+![eden -e](http://astrolet.github.com/eden/images/e.png)
 
 
 ## NAVIGATE
