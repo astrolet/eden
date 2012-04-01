@@ -2,7 +2,8 @@
 eden(1)             eden.1
 
 # annotations
-options(3)          annotations/lib/options
+options(3)          annotations/options
+ephemeris(3)        annotations/ephemeris
 
 # external
 Index(7)            http://astrolet.github.com/eden

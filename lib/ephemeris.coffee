@@ -11,17 +11,19 @@ Stream  = require("stream").Stream
 
 class Ephemeris
 
-  # @settings.out can be:
-  # * phase (Your CLI Formatting Friend)
-  # * points (phase is based on it)
-  # * table (raw cliff output of points)
-  # * json (is python's precious default)
-  # * print (python's print)
-  # * pprint (python's pretty-substitutes swe labels)
-  # * inspect (even prettier)
-  # * codedown (markdown code block html)
-  # * see Massage for more...
-  # These will become part of the help command / man and the gh-pages.
+  # The defaults-overriding options will become part of
+  # the help command, the man-pages / docs and the gh-pages.
+  # For example the `-o` that overrides `@settings.out` can be:
+  #
+  # * `points` (phase is based on it)
+  # * `phase` (your CLI Formatting Friend)
+  # * `points,table` (raw cliff output of points)
+  # * `json` (the precious json)
+  # * `json,codedown` (markdown code block html)
+  # * `print` (python's print)
+  # * `pprint` (python's pretty-substitutes swe labels)
+  # * `inspect` (the pretty eyes thing)
+  # * see `Massage` for more options...
 
   defaults:
     "root": "#{__dirname}/../"
@@ -40,7 +42,7 @@ class Ephemeris
     @settings = _.allFurther(@defaults, @specifics)
 
     unless @settings.data.match /^\//
-      # if not absolute then relative (to eden) ephemeris data path
+      # If not absolute, then relative (to eden) ephemeris data path.
       @settings.data = "#{@settings.root}#{@settings.data}"
 
     # The @settings.ut and @settings.geo - being reset.
@@ -241,7 +243,6 @@ class Ephemeris
             # to be longitude for sure (technical debt).
             # It is used all over the place!
             if prev.order?[0] isnt item.order[0]
-              # console.log item.what + ' ' + item.order[0]
               if _.size(seq) > 1
                 angled = topical = fortune = false
                 # One or more of the angles can be found in this sequence.

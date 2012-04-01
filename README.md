@@ -1,5 +1,5 @@
-eden -- (Eden -> en(o)de <- eNode)
-==================================
+eden -- (Eden -> en(o)de <- Node)
+=================================
 
 SYNOPSIS
 --------
@@ -10,14 +10,14 @@ SYNOPSIS
 
 _O, eden before no node!_<br/>
 _O, node after no eden!_<br/>
-_O, sweet this ephemeris on node is!_<br/>
+_O, this ephemeris on node is!_<br/>
 
 
 DESCRIPTION
 -----------
 
 Try the eden(1) command.
-So far it's just a tool for using the ephemeris library from a shell.
+So far it's just a tool for using the ephemeris(3) library from a shell.
 
 
 INSTALL
@@ -25,7 +25,10 @@ INSTALL
 
 With the [npm](http://npmjs.org/) prerequisite, do:
 
-    npm install lin
+    npm install -g eden
+
+The `-g` for global, means `eden` can be run
+regardless of what the current directory is.
 
 
 LICENSE
@@ -42,7 +45,7 @@ Please investigate, before commercially using Eden's ephemeris module.
 SEE ALSO
 --------
 
-eden(1), precious(7), gravity(6), lin(7)
+eden(1), ephemeris(3), precious(7), gravity(6), lin(7)
 
 
 NAVIGATE
