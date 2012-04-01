@@ -35,7 +35,7 @@
   , "async": "*"
   , "watch-tree": "*"
   }
-, "scripts": { "postinstall": "sh ./bin/install-message.sh" }
+, "scripts": {}
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "aix", "freebsd", "linux", "macos", "solaris" ]
 , "engines" : { "node" : "0.6.x", "npm": "1.1.x" }
