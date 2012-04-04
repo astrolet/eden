@@ -22,18 +22,16 @@
 , "dependencies":
   { "coffee-script": "1.2.x"
   , "lin": "*"
-  , "precious": "*"
   , "optimist": "*"
-  , "eyes": "*"
   , "massagist": "*"
   , "cliff": "*"
+  , "eyes": "*"
   }
 , "devDependencies":
-  { "docco": "*"
+  { "async": "*"
+  , "docco": "*"
   , "ronn": "*"
   , "vows": "*"
-  , "async": "*"
-  , "watch-tree": "*"
   }
 , "scripts": {}
 , "bin": { "eden" : "./cli.js" }
