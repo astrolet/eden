@@ -22,6 +22,7 @@
 , "dependencies":
   { "coffee-script": "1.2.x"
   , "lin": "*"
+  , "which": "*"
   , "optimist": "*"
   , "massagist": "*"
   , "cliff": "*"

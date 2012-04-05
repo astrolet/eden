@@ -33,9 +33,9 @@ switch opts.command
 
   when "ephemeris"
     Ephemeris = require("../lib/ephemeris")
-    ephemeris = new Ephemeris opts.merge
-    output ephemeris.settings
-    ephemeris.run process.stdout
+    ephemeris = new Ephemeris opts.merge, ->
+      output ephemeris.settings
+      ephemeris.run process.stdout
 
   else
     console.log "Unknown command '#{opts.command}' has bypassed the options validator..."

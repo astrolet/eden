@@ -1,5 +1,6 @@
 Gaia    = require("lin").Gaia
 util    = require("util")
+which   = require("which")
 spawn   = require("child_process").spawn
 Massage = require("massagist").Massage
 _       = require("massagist")._
@@ -27,7 +28,6 @@ class Ephemeris
 
   defaults:
     "root": "#{__dirname}/../"
-    "data": "node_modules/precious/node_modules/gravity/data/"
     "out": "json"
     "time": null
     "geo": {"lat": null, "lon": null}
@@ -38,21 +38,40 @@ class Ephemeris
              ]
     "houses": "W"
 
-  constructor: (@specifics = {}) ->
-    @settings = _.allFurther(@defaults, @specifics)
 
-    unless @settings.data.match /^\//
-      # If not absolute, then relative (to eden) ephemeris data path.
-      @settings.data = "#{@settings.root}#{@settings.data}"
+  # Because precious is not a dependency, nor is gravity,
+  # get the paths from a global precious install.
+  preciousPaths: (cb) ->
+    which "precious", (er, thing) =>
+      if er?
+        # TODO: handle precious not installed
+        console.error(er.message)
+      else
+        apath = thing.substring 0, thing.lastIndexOf '/'
+        apath += '/../lib/node_modules/precious/'
+        @defaults.data = apath + 'node_modules/gravity/data/'
+        @defaults.prep = apath + 'lib/'
+        cb()
 
-    # The @settings.ut and @settings.geo - being reset.
-    @gaia = new Gaia @settings["geo"], @settings["time"]
-    @settings.geo = {}
-    @settings.geo.lat = @gaia.lat
-    @settings.geo.lon = @gaia.lon
-    @settings.ut = @gaia.ut
 
-    @
+  # Pass a callback if you need to call @run *immediately*, or something...
+  constructor: (@specifics = {}, cb) ->
+    @preciousPaths =>
+      @settings = _.allFurther(@defaults, @specifics)
+
+      unless @settings.data.match /^\//
+        # If not absolute, then relative (to eden) ephemeris data path.
+        @settings.data = "#{@settings.root}#{@settings.data}"
+
+      # The @settings.ut and @settings.geo - being reset.
+      @gaia = new Gaia @settings["geo"], @settings["time"]
+      @settings.geo = {}
+      @settings.geo.lat = @gaia.lat
+      @settings.geo.lon = @gaia.lon
+      @settings.ut = @gaia.ut
+
+      cb() if cb?
+      @
 
 
   # A way to change just the output format, with possible method-chaining.
@@ -88,7 +107,7 @@ class Ephemeris
 
   run: (stream) ->
     ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
-                              , { cwd: __dirname + "/../node_modules/precious/lib" }
+                              , { cwd: @settings.prep }
 
     # An array of massage steps.  Expected to be something valid that
     # Massage can handle.  The `eden` (cli) sets up an `Array`
