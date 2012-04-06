@@ -50,7 +50,7 @@ class Ephemeris
         apath = thing.substring 0, thing.lastIndexOf '/'
         apath += '/../lib/node_modules/precious/'
         @defaults.data = apath + 'node_modules/gravity/data/'
-        @defaults.prep = apath + 'lib/'
+        @defaults.prep = apath + 'bin/'
         cb()
 
 
