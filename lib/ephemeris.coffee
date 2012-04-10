@@ -40,11 +40,11 @@ class Ephemeris
 
 
   # Configure ephemeris specifics, this is valid precious input.
-  configure: (specifics) ->
+  configure: (specifics, cb) ->
     @specifics = specifics if specifics?
     @settings = _.allFurther @defaults, @specifics
 
-    unless @settings.data.match /^\//
+    unless @settings.data?.match /^\//
       # If not absolute, then relative (to eden) ephemeris data path.
       @settings.data = "#{@settings.root}#{@settings.data}"
 
@@ -55,6 +55,9 @@ class Ephemeris
     @settings.geo.lon = @gaia.lon
     @settings.ut = @gaia.ut
 
+    cb() if cb?
+    @
+
 
   # Because precious is not a dependency, nor is gravity,
   # get the paths from a global precious install.
@@ -63,20 +66,45 @@ class Ephemeris
       if er?
         # TODO: handle precious not installed
         console.error(er.message)
+        @defaults.precious = null
       else
         apath = thing.substring 0, thing.lastIndexOf '/'
         apath += '/../lib/node_modules/precious/'
         @defaults.data = apath + 'node_modules/gravity/data/'
         @defaults.prep = apath + 'bin/'
+        @defaults.precious = apath + 'index.js'
         cb()
 
 
   # Pass a callback if you need to call @run *immediately*, or something...
   constructor: (specifics = {}, cb) ->
-    @preciousPaths =>
-      @configure specifics
-      cb() if cb?
-      @
+    switch specifics.precious
+      # We don't want to call precious and don't care where may be installed.
+      # Nothing special to do here.  This is how we use eden to get
+      # json input configuration for perhaps later calling precious with.
+      when false then ;
+      # Precious manually installed locally in `./node_modules`.
+      # Takes one's `specifics` word for it, without checking.
+      # This may be how things will be in the future.
+      when true
+        apath = './node_modules/'
+        @defaults.data = 'precious/node_modules/gravity/data/'
+        @defaults.prep = '.bin/'
+        @defaults.precious = 'precious/index.js'
+        specifics.precious = undefined # so that the default takes
+      # Undefined may become null.  Unknown what the paths are.
+      # Expecting a global precious install.  There may be none, which is null.
+      # Null is bad - because undefined implies intent to use precious.
+      when undefined
+        return @preciousPaths => @configure specifics, cb
+      # Unless all the paths have been given as specifics, throw an error.
+      # Of-course, it's assumed that the paths are valid.
+      # More about completeness than intended use.
+      else
+        unless _.isString specifics.precious
+          throw "Invalid precious specifics!"
+
+    return @configure specifics, cb
 
 
   # A way to change just the output format, with possible method-chaining.
