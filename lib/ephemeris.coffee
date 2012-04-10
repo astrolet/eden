@@ -65,6 +65,10 @@ class Ephemeris
       if _.isString @settings.precious
         @ephemeris = require(@settings.precious).ephemeris
 
+    # This can be called in various contexts.  Example: the callback can be used
+    # when the ephemeris paths are not immediately known (a global precious).
+    # It's passed via the `@constructor` / `@preciousPaths`
+    # - see the following sections...
     cb() if cb?
     @
 
@@ -95,7 +99,8 @@ class Ephemeris
       when false then ;
       # Precious manually installed locally in `./node_modules`.
       # Takes one's `specifics` word for it, without checking.
-      # This may be how things will be in the future.
+      # This may be how things will be done in the future -
+      # by default if precious becomes a dependency.
       when true
         apath = './node_modules/'
         @defaults.data = 'precious/node_modules/gravity/data/'
