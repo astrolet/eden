@@ -39,6 +39,23 @@ class Ephemeris
     "houses": "W"
 
 
+  # Configure ephemeris specifics, this is valid precious input.
+  configure: (specifics) ->
+    @specifics = specifics if specifics?
+    @settings = _.allFurther @defaults, @specifics
+
+    unless @settings.data.match /^\//
+      # If not absolute, then relative (to eden) ephemeris data path.
+      @settings.data = "#{@settings.root}#{@settings.data}"
+
+    # The @settings.ut and @settings.geo - being reset.
+    @gaia = new Gaia @settings["geo"], @settings["time"]
+    @settings.geo = {}
+    @settings.geo.lat = @gaia.lat
+    @settings.geo.lon = @gaia.lon
+    @settings.ut = @gaia.ut
+
+
   # Because precious is not a dependency, nor is gravity,
   # get the paths from a global precious install.
   preciousPaths: (cb) ->
@@ -55,21 +72,9 @@ class Ephemeris
 
 
   # Pass a callback if you need to call @run *immediately*, or something...
-  constructor: (@specifics = {}, cb) ->
+  constructor: (specifics = {}, cb) ->
     @preciousPaths =>
-      @settings = _.allFurther(@defaults, @specifics)
-
-      unless @settings.data.match /^\//
-        # If not absolute, then relative (to eden) ephemeris data path.
-        @settings.data = "#{@settings.root}#{@settings.data}"
-
-      # The @settings.ut and @settings.geo - being reset.
-      @gaia = new Gaia @settings["geo"], @settings["time"]
-      @settings.geo = {}
-      @settings.geo.lat = @gaia.lat
-      @settings.geo.lon = @gaia.lon
-      @settings.ut = @gaia.ut
-
+      @configure specifics
       cb() if cb?
       @
 
