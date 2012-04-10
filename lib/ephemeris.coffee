@@ -55,6 +55,16 @@ class Ephemeris
     @settings.geo.lon = @gaia.lon
     @settings.ut = @gaia.ut
 
+    # The @ephemeris is a function that implements
+    # [precious json](http://astrolet.github.com/precious/json.7.html) -
+    # input & output conforming to the spec.  It is optional,
+    # as we may just want to use this class for generating ephemeris input -
+    # the output results being deferred for later perhaps.
+    # It's only set once, as it isn't expected to change.
+    unless @ephemeris?
+      if _.isString @settings.precious
+        @ephemeris = require(@settings.precious).ephemeris
+
     cb() if cb?
     @
 
@@ -139,8 +149,10 @@ class Ephemeris
 
 
   run: (stream) ->
-    ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
-                              , { cwd: @settings.prep }
+    unless _.isFunction @ephemeris
+      throw "No ephemeris to run!"
+
+    ephemeris = @ephemeris @settings
 
     # An array of massage steps.  Expected to be something valid that
     # Massage can handle.  The `eden` (cli) sets up an `Array`
