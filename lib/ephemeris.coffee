@@ -153,11 +153,23 @@ class Ephemeris
       stream
 
 
+  # This is the reason `Ephemeris` exists, though running it sometimes just gets
+  # the `@settings`, so that the precious ephemeris can perhaps later be invoked
+  # conveniently with - or else simply for whatever reason - besides any bugs...
   run: (stream) ->
-    unless _.isFunction @ephemeris
+    # However, Ephemeris can't always be `@run` nor it is necessarily desirable.
+    if @settings.precious is false
+      if _.isString(@settings.out) and @settings.out isnt "json"
+        @settings.out = ["json", @settings.out]
+      if _.isArray @settings.out
+        massage = new Massage @settings.out
+        massage.write   JSON.stringify(@settings), stream
+      else stream.write JSON.stringify(@settings)
+      return
+    else unless _.isFunction @ephemeris
       throw "No ephemeris to run!"
-
-    ephemeris = @ephemeris @settings
+    else
+      ephemeris = @ephemeris @settings
 
     # An array of massage steps.  Expected to be something valid that
     # Massage can handle.  The `eden` (cli) sets up an `Array`
