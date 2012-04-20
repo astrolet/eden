@@ -4,7 +4,7 @@ docs = "#{__dirname}/docs"
 {basename, join} = require 'path'
 {exec, spawn} = require 'child_process'
 inspect = require('eyes').inspector({stream: null, pretty: false, styles: {all: 'magenta'}})
-watchTree = require('watch-tree').watchTree
+# watchTree = require('watch-tree').watchTree
 {series, parallel} = require 'async'
 
 

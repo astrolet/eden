@@ -31,11 +31,21 @@ process.stdout.on "end", ->
 
 switch opts.command
 
-  when "ephemeris"
-    Ephemeris = require("../lib/ephemeris")
-    ephemeris = new Ephemeris opts.merge
+  when "precious"
+    ephemeris = new (require "../lib/ephemeris")(opts.merge)
     output ephemeris.settings
     ephemeris.run process.stdout
+    # Massaged (Array) ephemeris.settings.out somehow get their "\n" trailing...
+    # Extra newlines are not added outside of command-line context, otherwise.
+    # This just does consistent output compensation.
+    process.stdout.write "\n" if typeof ephemeris.settings.out is "string"
+    process.stdout.emit "end"
+
+  when "ephemeris"
+    Ephemeris = require("../lib/ephemeris")
+    ephemeris = new Ephemeris opts.merge, ->
+      output ephemeris.settings
+      ephemeris.run process.stdout
 
   else
     console.log "Unknown command '#{opts.command}' has bypassed the options validator..."

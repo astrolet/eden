@@ -3,9 +3,10 @@ _     = require("massagist")._
 
 class Options
 
-  commands: ["help", "ephemeris"]
-  help: false
+  commands: ["help", "ephemeris", "precious"]
+  merge: {}
   verbose: false
+  help: false
   easy:
     ephemeris:
       time: "1974-06-30T23:45:00.000+02:00"
@@ -35,18 +36,28 @@ class Options
           @help = true
         else
           @command = command # the last command wins
-    , this
+    , @
 
-    # help & exit
-    if @help
-      this.man(@command)
+    # Help & exit @man does.
+    if @help then @man @command
     else unless @command?
       console.log "Missing or invalid command."
-      this.man()
+      @man()
 
-    # special options
+    # Special commands that become other commands.  Though not literally per se.
+    if @command is "precious"
+      # With precious we don't want to run the ephemeris, but rather get the
+      # json settings (that Eden or whatever else could use) to call it with
+      # in the future, perhaps.
+      @merge.out = "json"
+      @merge.precious = false
+
+    if argv.easy or argv.e
+      @merge = _.allFurther @merge, this.easy[@command]
+
+    # Special options - besides `@help`.
     @verbose = true if argv.verbose or argv.v
-    @merge = if argv.easy or argv.e then this.easy[@command] else {}
+
     # massaged output
     @merge.out = argv.o if argv.o? and not (argv.o instanceof Boolean)
     @merge.out = argv.out if argv.out? and not (argv.out instanceof Boolean) # spelled-out wins
