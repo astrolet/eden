@@ -20,7 +20,7 @@
   }
 , "main": "index"
 , "dependencies":
-  { "coffee-script": "1.2.x"
+  { "coffee-script": "1.3.x"
   , "lin": "*"
   , "upon": "*"
   , "which": "*"
