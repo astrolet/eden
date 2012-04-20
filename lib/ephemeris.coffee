@@ -5,7 +5,7 @@ spawn   = require("child_process").spawn
 Massage = require("massagist").Massage
 _       = require("massagist")._
 cliff   = require("cliff")
-degrees = require("lin").degrees
+degrees = require("upon").degrees
 Points  = require("lin").Points
 Stream  = require("stream").Stream
 
