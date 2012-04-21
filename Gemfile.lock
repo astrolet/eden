@@ -1,65 +1,30 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.0.7)
-    addressable (2.2.5)
-    configuration (1.2.0)
-    em-dir-watcher (0.9.4)
-    em-websocket (0.3.0)
-      addressable (>= 2.1.1)
-      eventmachine (>= 0.12.9)
-    eventmachine (0.12.10)
-    github (0.6.2)
-      highline (~> 1.5.1)
-      json_pure (~> 1.5.1)
-      launchy (~> 0.3.7)
-      text-format (= 1.0.0)
-      text-hyphen (= 1.0.0)
-    growl (1.0.3)
-    highline (1.5.2)
+    bcat (0.6.2)
+      rack (~> 1.0)
+    colorize (0.5.8)
+    git (1.2.5)
+    git-smart (0.1.8)
+      colorize
+    hashr (0.0.21)
     hpricot (0.8.4)
-    i18n (0.4.2)
-    json_pure (1.5.1)
-    launchy (0.3.7)
-      configuration (>= 0.0.5)
-      rake (>= 0.8.1)
-    livereload (1.6)
-      em-dir-watcher (>= 0.1)
-      em-websocket (>= 0.1.2)
-      ruby-json (>= 1.1.2)
     mustache (0.99.3)
-    rack (1.2.2)
-    rake (0.8.7)
-    rb-appscript (0.6.1)
-    rb-fsevent (0.4.0)
+    rack (1.4.1)
     rdiscount (1.6.8)
     ronn (0.7.3)
       hpricot (>= 0.8.2)
       mustache (>= 0.7.0)
       rdiscount (>= 1.5.8)
-    ruby-json (1.1.2)
-    serve (1.0.0)
-      activesupport (~> 3.0.1)
-      i18n (~> 0.4.1)
-      rack (~> 1.2.1)
-      tzinfo (~> 0.3.23)
-    terminitor (0.5.2)
-      github (~> 0.6.2)
-      rb-appscript (~> 0.6.1)
-      thor (~> 0.14.0)
-    text-format (1.0.0)
-      text-hyphen (~> 1.0.0)
-    text-hyphen (1.0.0)
-    thor (0.14.6)
-    tzinfo (0.3.27)
+    travis-lint (1.4.0)
+      hashr (>= 0.0.19)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  growl
-  livereload
-  rb-fsevent
+  bcat
+  git
+  git-smart
   ronn
-  serve
-  terminitor
+  travis-lint

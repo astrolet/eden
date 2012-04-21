@@ -1,9 +1,7 @@
 Gaia    = require("lin").Gaia
-util    = require("util")
 which   = require("which")
-spawn   = require("child_process").spawn
-Massage = require("massagist").Massage
 _       = require("massagist")._
+Massage = require("massagist").Massage
 cliff   = require("cliff")
 degrees = require("upon").degrees
 Points  = require("lin").Points

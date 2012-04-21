@@ -30,10 +30,10 @@
   , "eyes": "*"
   }
 , "devDependencies":
-  { "async": "*"
+  { "ronn": "*"
   , "docco": "*"
-  , "ronn": "*"
-  , "vows": "*"
+  , "async": "*"
+  , "police": "*"
   }
 , "scripts": {}
 , "bin": { "eden" : "./cli.js" }
