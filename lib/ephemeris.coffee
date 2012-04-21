@@ -1,10 +1,9 @@
 Gaia    = require("lin").Gaia
-util    = require("util")
-spawn   = require("child_process").spawn
-Massage = require("massagist").Massage
+which   = require("which")
 _       = require("massagist")._
+Massage = require("massagist").Massage
 cliff   = require("cliff")
-degrees = require("lin").degrees
+degrees = require("upon").degrees
 Points  = require("lin").Points
 Stream  = require("stream").Stream
 
@@ -27,21 +26,22 @@ class Ephemeris
 
   defaults:
     "root": "#{__dirname}/../"
-    "data": "node_modules/precious/node_modules/gravity/data/"
     "out": "json"
     "time": null
     "geo": {"lat": null, "lon": null}
-    "dms": false
     "stuff": [ [0, 1, 2, 3]
              , [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 11, 15, 17, 18, 19, 20]
              , [136199, 7066, 50000, 90377, 20000]
              ]
     "houses": "W"
 
-  constructor: (@specifics = {}) ->
-    @settings = _.allFurther(@defaults, @specifics)
 
-    unless @settings.data.match /^\//
+  # Configure ephemeris specifics, this is valid precious input.
+  configure: (specifics, cb) ->
+    @specifics = specifics if specifics?
+    @settings = _.allFurther @defaults, @specifics
+
+    unless @settings.data?.match /^\//
       # If not absolute, then relative (to eden) ephemeris data path.
       @settings.data = "#{@settings.root}#{@settings.data}"
 
@@ -52,7 +52,71 @@ class Ephemeris
     @settings.geo.lon = @gaia.lon
     @settings.ut = @gaia.ut
 
+    # The @ephemeris is a function that implements
+    # [precious json](http://astrolet.github.com/precious/json.7.html) -
+    # input & output conforming to the spec.  It is optional,
+    # as we may just want to use this class for generating ephemeris input -
+    # the output results being deferred for later perhaps.
+    # It's only set once, as it isn't expected to change.
+    unless @ephemeris?
+      if _.isString @settings.precious
+        @ephemeris = require(@settings.precious).ephemeris
+
+    # This can be called in various contexts.  Example: the callback can be used
+    # when the ephemeris paths are not immediately known (a global precious).
+    # It's passed via the `@constructor` / `@preciousPaths`
+    # - see the following sections...
+    cb() if cb?
     @
+
+
+  # Because precious is not a dependency, nor is gravity,
+  # get the paths from a global precious install.
+  preciousPaths: (cb) ->
+    which "precious", (er, thing) =>
+      if er?
+        # TODO: handle precious not installed
+        console.error(er.message)
+        @defaults.precious = null
+      else
+        apath = thing.substring 0, thing.lastIndexOf '/'
+        apath += '/../lib/node_modules/precious/'
+        @defaults.data = apath + 'node_modules/gravity/data/'
+        @defaults.prep = apath + 'bin/'
+        @defaults.precious = apath + 'index.js'
+        cb()
+
+
+  # Pass a callback if you need to call @run *immediately*, or something...
+  constructor: (specifics = {}, cb) ->
+    switch specifics.precious
+      # We don't want to call precious and don't care where may be installed.
+      # Nothing special to do here.  This is how we use eden to get
+      # json input configuration for perhaps later calling precious with.
+      when false then ;
+      # Precious manually installed locally in `./node_modules`.
+      # Takes one's `specifics` word for it, without checking.
+      # This may be how things will be done in the future -
+      # by default if precious becomes a dependency.
+      when true
+        apath = './node_modules/'
+        @defaults.data = 'precious/node_modules/gravity/data/'
+        @defaults.prep = '.bin/'
+        @defaults.precious = 'precious/index.js'
+        specifics.precious = undefined # so that the default takes
+      # Undefined may become null.  Unknown what the paths are.
+      # Expecting a global precious install.  There may be none, which is null.
+      # Null is bad - because undefined implies intent to use precious.
+      when undefined
+        return @preciousPaths => @configure specifics, cb
+      # Unless all the paths have been given as specifics, throw an error.
+      # Of-course, it's assumed that the paths are valid.
+      # More about completeness than intended use.
+      else
+        unless _.isString specifics.precious
+          throw "Invalid precious specifics!"
+
+    return @configure specifics, cb
 
 
   # A way to change just the output format, with possible method-chaining.
@@ -86,9 +150,26 @@ class Ephemeris
       stream
 
 
+  # This is the reason `Ephemeris` exists, though running it sometimes just gets
+  # the `@settings`, so that the precious ephemeris can perhaps later be invoked
+  # conveniently with - or else simply for whatever reason - besides any bugs...
   run: (stream) ->
-    ephemeris = spawn "python", ["ephemeris.py", "#{JSON.stringify(@settings)}"]
-                              , { cwd: __dirname + "/../node_modules/precious/lib" }
+    # However, Ephemeris can't always be `@run` nor it is necessarily desirable.
+    if @settings.precious is false
+      # Note: this isn't fit for rerun as `@settings` are being changed...
+      if _.isString(@settings.out) and @settings.out isnt "json"
+        @settings.out = ["json", @settings.out]
+      # Clean-up the `@settings` for later use.
+      delete @settings[key] for key in ['root', 'data', 'precious']
+      if _.isArray @settings.out
+        massage = new Massage @settings.out
+        massage.write   JSON.stringify(@settings), stream
+      else stream.write JSON.stringify(@settings)
+      return
+    else unless _.isFunction @ephemeris
+      throw "No ephemeris to run!"
+    else
+      ephemeris = @ephemeris @settings
 
     # An array of massage steps.  Expected to be something valid that
     # Massage can handle.  The `eden` (cli) sets up an `Array`
@@ -123,58 +204,58 @@ class Ephemeris
           longitude = "   longitude" # the name cliff label
           rpad = ' ' # right-padding for better readability
           table =
-            [ { key: " "
-              , req: ["id", "sid"]
-              , act: true
-              , val: (its, it) ->
+            [ { "key": " "
+              , "req": ["id", "sid"]
+              , "act": true
+              , "val": (its, it) ->
                 lead = if its.sid >= 10000 then "+" else ""
                 if it.get('u')? then it.get('u').white else lead
               }
-            , { key: "what"
-              , req: ["id"]
-              , act: true
-              , val: (its, it) ->
+            , { "key": "what"
+              , "req": ["id"]
+              , "act": true
+              , "val": (its, it) ->
                 if it.get('id') is '?' then its.id else it.get 'name'
               }
-            , { key: longitude
-              , req: ["lon"]
-              , act: true
-              , val: (its) ->
+            , { "key": longitude
+              , "req": ["lon"]
+              , "act": true
+              , "val": (its) ->
                 degrees.lon(its.lon).rep('str')
               , sort: "lon"
               }
-            , { key: "~"
-              , req: ["day_lon"]
-              , act: true
-              , val: (its) ->
+            , { "key": "~"
+              , "req": ["day_lon"]
+              , "act": true
+              , "val": (its) ->
                 if its.day_lon < 0 then '℞'.red else ''
               }
-            , { key: " speed"
-              , req: ["day_lon"]
-              , act: true
-              , val: (its) ->
+            , { "key": " speed"
+              , "req": ["day_lon"]
+              , "act": true
+              , "val": (its) ->
                 if its.day_lon?
                   front = ('' if its.day_lon < 0 or its.day_lon >= 10) ? ' '
                   front + its.day_lon.toFixed 3
                 else ''
               }
-            , { key: "  latitude"
-              , req: ["lat"]
-              , act: false
-              , val: (its) ->
+            , { "key": "  latitude"
+              , "req": ["lat"]
+              , "act": false
+              , "val": (its) ->
                 degrees.of(its.lat).str()
               }
-            , { key: "distance"
-              , req: ["dau"]
-              , act: true
-              , val: (its) ->
+            , { "key": "distance"
+              , "req": ["dau"]
+              , "act": true
+              , "val": (its) ->
                 return '' unless _.isNumber its.dau
                 its.dau.toFixed(4 - String(Math.floor its.dau).length) + " AU"
               }
-            , { key: "reason"
-              , req: ["re"]
-              , act: true
-              , val: (its) ->
+            , { "key": "reason"
+              , "req": ["re"]
+              , "act": true
+              , "val": (its) ->
                 its.re
               }
             ]

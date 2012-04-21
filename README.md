@@ -1,5 +1,6 @@
-eden -- (Eden -> en(o)de <- Node)
-=================================
+eden -- (Eden - en(o)de - Node)
+===============================
+
 
 SYNOPSIS
 --------
@@ -29,6 +30,10 @@ With the [npm](http://npmjs.org/) prerequisite, do:
 
 The `-g` for global, means `eden` can be run
 regardless of what the current directory is.
+
+In order to have a fully-enabled ephemeris you should `npm install -g precious`.
+Or else `cake install` would get eden all set-up for development too.  Make sure
+to check its licensing, which varies according to use.
 
 
 LICENSE

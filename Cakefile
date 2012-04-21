@@ -3,16 +3,25 @@ docs = "#{__dirname}/docs"
 
 {basename, join} = require 'path'
 {exec, spawn} = require 'child_process'
-inspect = require('eyes').inspector({stream: null, pretty: false, styles: {all: 'magenta'}})
-watchTree = require('watch-tree').watchTree
 {series, parallel} = require 'async'
+inspect = require('eyes').inspector
+  stream: null
+  pretty: false
+  styles:
+    all: 'magenta'
 
+
+# Utility functions
+
+pleaseWait = ->
+  console.log "\nThis may take a while...\n"
 
 handleError = (err) ->
   if err
-    console.log "\n\033[1;36m=>\033[1;37m Remember you need to `npm install` the package.json devDependencies and also `bundle install`.\033[0;37m\n"
+    console.log "\nUnexpected error!\nHave you done `cake install`?\n"
     console.log err.stack
 
+# execute some command quietly (without stdout)
 sh = (command) -> (k) -> exec command, k
 
 # Modified from https://gist.github.com/920698
@@ -28,35 +37,43 @@ command = (c, cb) ->
   cb
 
 
-task 'assets:watch', 'Broken: watch source files and build docs', (options) ->
+# First-time setup.  Pygments is required by docco.
+# Also installs precious, so don't run it if unwanted.
+# Note: this will be a local install - of precious,
+# after it's coupled with nconf / args setting.
+task 'install', "does: npm packages + precious, pycco, bundler / gems, etc.", ->
+  pleaseWait()
+  command "
+    npm install
+     && npm install -g precious
+     && gem install bundler
+     && bundle install
+     && easy_install Pygments
+    "
 
-  watchStuff = (callback) ->
-    watch_rate = 100 #ms
-    watch_info =
-      1:
-        path: "lib"
-        options:
-          'match': '.+\.coffee'
-        events: ["filePreexisted", "fileCreated", "fileModified"]
-        callback: -> console.log "you can't call me"
 
-    # NOTE: it would be nice if the watch_info[n].callback could be called
-    # ... and if we knew which event fired it - perhaps there is a way?
-
-    watcher = {}
-    for item, stuff of watch_info
-      stuff.options['sample-rate'] = watch_rate
-      for event in stuff.events
-        watcher["#{item}-#{event}"] = watchTree(stuff.path, stuff.options)
-        watcher["#{item}-#{event}"].on event, (what, stats) ->
-          console.log what + ' - is being documented (due to some event), stats: ' + inspect(stats)
-          if what.match /(.*)\/[^\/]+\.coffee$/ then runCommand 'docco', [what]
-          else console.log "unrecognized file type of #{what}"
-
-  series [
-    (sh "rm -rf #{docs}/")
-    watchStuff
+# Check if any node_modules or gems have become outdated.
+task 'outdated', "is all up-to-date?", ->
+  pleaseWait()
+  parallel [
+    command "npm outdated"
+    command "gem outdated"
   ], (err) -> throw err if err
+
+
+# Usually follows `cake outdated`.
+task 'update', "latest node modules & ruby gems - the lazy way", ->
+  pleaseWait()
+  parallel [
+    command "npm update"
+    command "bundle update"
+  ], (err) -> throw err if err
+
+
+# It's the local police at the project's root.
+# Catches outdated modules that `cake outdated` doesn't report (major versions).
+task 'police', "checks npm package & dependencies with `police -l .`", ->
+  command "police -l ."
 
 
 # Literate programming for the coffee sources.
