@@ -157,8 +157,11 @@ class Ephemeris
   run: (stream) ->
     # However, Ephemeris can't always be `@run` nor it is necessarily desirable.
     if @settings.precious is false
+      # Note: this isn't fit for rerun as `@settings` are being changed...
       if _.isString(@settings.out) and @settings.out isnt "json"
         @settings.out = ["json", @settings.out]
+      # Clean-up the `@settings` for later use.
+      delete @settings[key] for key in ['root', 'data', 'precious']
       if _.isArray @settings.out
         massage = new Massage @settings.out
         massage.write   JSON.stringify(@settings), stream
