@@ -39,11 +39,13 @@ command = (c, cb) ->
 
 # First-time setup.  Pygments is required by docco.
 # Also installs precious, so don't run it if unwanted.
+# Note: this will be a local install - of precious,
+# after it's coupled with nconf / args setting.
 task 'install', "does: npm packages + precious, pycco, bundler / gems, etc.", ->
   pleaseWait()
   command "
     npm install
-     && npm install precious
+     && npm install -g precious
      && gem install bundler
      && bundle install
      && easy_install Pygments
