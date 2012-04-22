@@ -273,7 +273,8 @@ class Ephemeris
           # The out-values, titles and their color.
           out = []
           titles = _.pluck table, 'key'
-          (color ?= []).push "white" for count in [0..table.length]
+          color = []
+          color.push "white" for count in [0..table.length]
 
           # Add the representations for better readability.
           lon = degrees.lon 0 # just for representation symbols
