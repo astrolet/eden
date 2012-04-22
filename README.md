@@ -5,13 +5,9 @@ eden -- (Eden - en(o)de - Node)
 SYNOPSIS
 --------
 
-<BR/>
-
-**Ephemeris on Node**
-
-_O, eden before no node!_<br/>
-_O, node after no eden!_<br/>
-_O, this ephemeris on node is!_<br/>
+_eden before no node_<br/>
+_node after no eden_<br/>
+_this **ephemeris on node** is_<br/>
 
 
 DESCRIPTION
