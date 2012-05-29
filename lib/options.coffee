@@ -3,20 +3,17 @@ _     = require("massagist")._
 
 class Options
 
-  commands: ["help", "ephemeris", "precious"]
+  commands: ["help", "pre", "ephemeris"]
   merge: {}
   verbose: false
   help: false
   easy:
     ephemeris:
-      time: "1974-06-30T23:45:00.000+02:00"
-      ###
-      geo:
+      time: "1974-06-30T23:43:59.000+02:00"
+      geo: # "43.2166667,27.9166667"
         { "lat": 43.2166667 # "43N13"
         , "lon": 27.9166667 # "27E55"
         }
-      ###
-      geo: new String("43.2166667,27.9166667") # TODO: why is this not a String to begin with?
 
   man: (what = "help") ->
     # TODO: use ronn? markdown help files (see how npm does it)
@@ -45,7 +42,7 @@ class Options
       @man()
 
     # Special commands that become other commands.  Though not literally per se.
-    if @command is "precious"
+    if @command is "pre"
       # With precious we don't want to run the ephemeris, but rather get the
       # json settings (that Eden or whatever else could use) to call it with
       # in the future, perhaps.

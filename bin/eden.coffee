@@ -31,7 +31,7 @@ process.stdout.on "end", ->
 
 switch opts.command
 
-  when "precious"
+  when "pre"
     ephemeris = new (require "../lib/ephemeris")(opts.merge)
     output ephemeris.settings
     ephemeris.run process.stdout
