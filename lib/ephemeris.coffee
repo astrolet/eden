@@ -2,8 +2,7 @@ Gaia    = require("lin").Gaia
 which   = require("which")
 _       = require("massagist")._
 Massage = require("massagist").Massage
-Points  = require("lin").Points
-Stream  = require("stream").Stream
+points  = require("./points")
 phase   = require("./phase")
 
 
@@ -127,24 +126,19 @@ class Ephemeris
   # It also sets up the *points* json for *phase*.
   pre: (stream) ->
     process = true
-    points = "points"
+    the_points = "points"
     becoming = "json"
-    # This is so that points can be passed as JSON to `Massage` further.
-    if _.isArray(@settings.out) and @settings.out[0] is points
-      [process, @settings.out[0]] = [points, becoming]
+    # This is so that the_points can be passed as JSON to `Massage` further.
+    if _.isArray(@settings.out) and @settings.out[0] is the_points
+      [process, @settings.out[0]] = [the_points, becoming]
     # Only the data changes for the following, `@settings.out` remains as is.
-    else if _.include [points, "phase"], @settings.out
-      process = points
+    else if _.include [the_points, "phase"], @settings.out
+      process = the_points
 
     # Specific processing (e.g. points), or else return the same stream
     # without changing anything at all.
-    if process is points
-      restream = new Stream
-      settings = @settings # so it can be passed to points as options
-      stream.on "data", (precious) ->
-        points = new Points [], {data: JSON.parse(precious), settings: settings}
-        restream.emit "data", JSON.stringify(points.toJSON()) + "\n"
-      restream
+    if process is the_points
+      points stream, @settings
     else
       stream
 
