@@ -11,6 +11,10 @@ inspect = require("eyes").inspector(
                           }
                         })
 
+Ephemeris = require "../lib/ephemeris"
+points    = require "../lib/points"
+phase     = require "../lib/phase"
+
 
 output = (context) ->
   if opts.verbose
@@ -32,7 +36,7 @@ process.stdout.on "end", ->
 switch opts.command
 
   when "pre"
-    ephemeris = new (require "../lib/ephemeris")(opts.merge)
+    ephemeris = new Ephemeris opts.merge
     output ephemeris.settings
     ephemeris.run process.stdout
     # Massaged (Array) ephemeris.settings.out somehow get their "\n" trailing...
@@ -42,15 +46,11 @@ switch opts.command
     process.stdout.emit "end"
 
   when "ephemeris"
-    Ephemeris = require("../lib/ephemeris")
     ephemeris = new Ephemeris opts.merge, ->
       output ephemeris.settings
       ephemeris.run process.stdout
 
   when "eat"
-    points = require "../lib/points"
-    phase = require "../lib/phase"
-    Ephemeris = require("../lib/ephemeris")
     ephemeris = new Ephemeris opts.merge, ->
       # NOTE: whatever points need the `settings` for?
       # Take them from precious.0 (implement the precious-json "extra").

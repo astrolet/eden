@@ -1,6 +1,7 @@
 _       = require("underscore")
 cliff   = require("cliff")
 degrees = require("upon").degrees
+Ensemble = require("lin").Ensemble
 
 # This is just points presentation,
 # It could later be done with a `Backbone.View`.
@@ -11,7 +12,7 @@ module.exports = phase = (streamin, stream) ->
 
     # It's just about output format from here on.
     if json.length > 0
-      ensemble = new (require "lin").Ensemble
+      ensemble = new Ensemble
       longitude = "   longitude" # the name cliff label
       rpad = ' ' # right-padding for better readability
       table =
