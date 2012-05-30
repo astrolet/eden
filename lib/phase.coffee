@@ -1,4 +1,4 @@
-_       = require("massagist")._
+_       = require("underscore")
 cliff   = require("cliff")
 degrees = require("upon").degrees
 
