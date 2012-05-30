@@ -3,7 +3,7 @@ _     = require("massagist")._
 
 class Options
 
-  commands: ["help", "pre", "ephemeris"]
+  commands: ["help", "pre", "ephemeris", "eat"]
   merge: {}
   verbose: false
   help: false

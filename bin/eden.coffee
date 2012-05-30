@@ -47,6 +47,17 @@ switch opts.command
       output ephemeris.settings
       ephemeris.run process.stdout
 
+  when "eat"
+    points = require "../lib/points"
+    phase = require "../lib/phase"
+    Ephemeris = require("../lib/ephemeris")
+    ephemeris = new Ephemeris opts.merge, ->
+      # NOTE: whatever points need the `settings` for?
+      # Take them from precious.0 (implement the precious-json "extra").
+      process.stdin.resume()
+      process.stdin.setEncoding("utf8")
+      phase (points process.stdin, ephemeris.settings), process.stdout
+
   else
     console.log "Unknown command '#{opts.command}' has bypassed the options validator..."
     console.log "Nothing to do."

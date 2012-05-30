@@ -2,7 +2,10 @@ Points  = require("lin").Points
 Stream  = require("stream").Stream
 
 # This probably belongs to Points, if necessary at all...
-# It could also be more efficient.
+# It could also be more efficient. Therefore...
+# TODO:
+# Expect / pass a JSONStream to the Points constructor.
+# Don't stringify, because phase will parse it again.
 
 module.exports = (stream, settings) ->
   restream = new Stream
