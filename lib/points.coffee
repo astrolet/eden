@@ -10,6 +10,10 @@ Stream  = require("stream").Stream
 module.exports = (stream, settings) ->
   restream = new Stream
   stream.on "data", (precious) ->
-    points = new Points [], {data: JSON.parse(precious), settings: settings}
+    data = JSON.parse precious
+    # TODO: The `settings` should be known at the `eden` cli level.
+    settings ?= data['0']?.re
+    # NOTE: check whatever `Points` needs the `settings` for...
+    points = new Points [], data: data, settings: settings
     restream.emit "data", JSON.stringify(points.toJSON()) + "\n"
   restream

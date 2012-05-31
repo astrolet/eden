@@ -26,6 +26,7 @@
   , "upon": "*"
   , "which": "*"
   , "optimist": "*"
+  , "JSONStream": "*"
   , "massagist": "*"
   , "cliff": "*"
   , "eyes": "*"

@@ -25,13 +25,13 @@ switch opts.command
       ephemeris.run output process.stdout, opts, ephemeris.settings
 
   when "eat"
-    ephemeris = new Ephemeris opts.merge, ->
-      # NOTE: whatever points need the `settings` for?
-      # Take them from precious.0 (implement the precious-json "extra").
-      process.stdin.resume()
-      process.stdin.setEncoding("utf8")
-      phase (points process.stdin, ephemeris.settings), # output stream below
-      output process.stdout, opts, ephemeris.settings, "\n"
+    process.stdin.resume()
+    process.stdin.setEncoding("utf8")
+    # TODO: extract the settings from `stdin precious[0].extra.re`,
+    # and pass to both `points` and `output` functions.
+    # Ideally, use `JSONStream` all the way.
+    phase (points process.stdin), # output stream below
+    output process.stdout, opts, {}, "\n" # see above TODO for the settings...
 
   else
     output process.stdout, opts
