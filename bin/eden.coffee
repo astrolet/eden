@@ -16,14 +16,14 @@ points    = require "../lib/points"
 phase     = require "../lib/phase"
 
 
-output = (context) ->
-  if opts.verbose
+output = (opts, settings) ->
+  if opts.verbose and settings?.out isnt "json"
     console.log "\noptions:"
     inspect opts.argv
     console.log "command: #{opts.command}"
-    if context?
+    if settings?
       console.log "context:"
-      inspect ephemeris.settings
+      inspect settings
     console.log ""
     console.log "RESULTS"
     console.log "======="
@@ -37,7 +37,7 @@ switch opts.command
 
   when "pre"
     ephemeris = new Ephemeris opts.merge
-    output ephemeris.settings
+    output opts, ephemeris.settings
     ephemeris.run process.stdout
     # Massaged (Array) ephemeris.settings.out somehow get their "\n" trailing...
     # Extra newlines are not added outside of command-line context, otherwise.
@@ -47,7 +47,7 @@ switch opts.command
 
   when "know"
     ephemeris = new Ephemeris opts.merge, ->
-      output ephemeris.settings
+      output opts, ephemeris.settings
       ephemeris.run process.stdout
 
   when "eat"
@@ -56,9 +56,11 @@ switch opts.command
       # Take them from precious.0 (implement the precious-json "extra").
       process.stdin.resume()
       process.stdin.setEncoding("utf8")
+      output opts, ephemeris.settings
       phase (points process.stdin, ephemeris.settings), process.stdout
 
   else
+    output opts
     console.log "Unknown command '#{opts.command}' has bypassed the options validator..."
     console.log "Nothing to do."
     process.exit(0)
