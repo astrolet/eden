@@ -17,4 +17,4 @@ Here is an `eden -e` example:
 
 ## NAVIGATE
 
-Index(7), Home(7)
+Index(7), Base(7)
