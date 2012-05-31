@@ -3,12 +3,12 @@ _     = require("massagist")._
 
 class Options
 
-  commands: ["help", "pre", "ephemeris", "eat"]
+  commands: ["help", "pre", "know", "eat"]
   merge: {}
   verbose: false
   help: false
   easy:
-    ephemeris:
+    know:
       time: "1974-06-30T23:43:59.000+02:00"
       geo: # "43.2166667,27.9166667"
         { "lat": 43.2166667 # "43N13"
@@ -23,9 +23,9 @@ class Options
   constructor: (argv) ->
     @argv = argv
 
-    # ephemeris is the default command (there is no empty _ array)
+    # know is the default command (there is no empty _ array)
     if @argv._.length is 0
-      @argv._ = ["ephemeris"]
+      @argv._ = ["know"]
 
     # command validation / setting
     _.each _.intersect(argv._, this.commands), (command) ->
@@ -91,7 +91,7 @@ class Options
 
     # ephemeris data path default
     # NOTE: do we want an @argv.data default, or put it into @merge?
-    @argv.data ?= "mnt/sin/data/" if @command is "ephemeris"
+    @argv.data ?= "mnt/sin/data/" if @command is "know"
 
     # TODO: process more options (add to @merge) ...
 

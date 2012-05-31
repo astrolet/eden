@@ -45,7 +45,7 @@ switch opts.command
     process.stdout.write "\n" if typeof ephemeris.settings.out is "string"
     process.stdout.emit "end"
 
-  when "ephemeris"
+  when "know"
     ephemeris = new Ephemeris opts.merge, ->
       output ephemeris.settings
       ephemeris.run process.stdout
