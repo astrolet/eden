@@ -167,4 +167,5 @@ module.exports = phase = (streamin, stream) ->
       stream.write cliff.stringifyObjectRows outer, titles, color
 
     else stream.write "Given no data."
-    stream.write "\n"
+
+    stream.emit "end"
