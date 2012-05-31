@@ -1,7 +1,8 @@
 #!/usr/bin/env coffee
 
-opts      = require "../lib/options"
+opts      = require "./options"
 output    = require "./output"
+
 Ephemeris = require "../lib/ephemeris"
 points    = require "../lib/points"
 phase     = require "../lib/phase"
