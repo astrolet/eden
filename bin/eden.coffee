@@ -1,16 +1,6 @@
 #!/usr/bin/env coffee
 
-opts    = require("../lib/options")
-inspect = require("eyes").inspector(
-                        { pretty: true
-                        , styles:
-                          { all: "green"
-                          , number: "magenta"
-                          , key: "bold"
-                          , string: "blue"
-                          }
-                        })
-
+opts      = require "../lib/options"
 output    = require "./output"
 Ephemeris = require "../lib/ephemeris"
 points    = require "../lib/points"

@@ -2,6 +2,13 @@ module.exports = (stream, opts, settings, trail) ->
 
   # Obviously, we don't want to spoil the json with unparseable verbosity.
   if opts.verbose and settings?.out isnt "json"
+    inspect = require("eyes").inspector
+      pretty: true
+      styles:
+        all: "green"
+        number: "magenta"
+        key: "bold"
+        string: "blue"
     console.log "\noptions:"
     inspect opts.argv
     console.log "command: #{opts.command}"
