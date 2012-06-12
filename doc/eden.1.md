@@ -1,12 +1,12 @@
-eden(1) -- Astrolet's command line interface ephemeris
-======================================================
+# eden(1) -- Astrolet's command line interface ephemeris
 
-## SYNOPSIS
+
+## WHAT
 
 `eden [<options>]`
 
 
-## DESCRIPTION
+## ABOUT
 
 The `eden help` command will soon be implemented to provide details.
 
@@ -15,6 +15,6 @@ Here is an `eden -e` example:
 ![eden -e](http://astrolet.github.com/eden/images/e.png)
 
 
-## NAVIGATE
+## HOME
 
-Index(7), Home(7)
+Index(7), Base(7)

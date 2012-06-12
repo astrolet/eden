@@ -57,7 +57,7 @@ task 'outdated', "is all up-to-date?", ->
   pleaseWait()
   parallel [
     command "npm outdated"
-    command "gem outdated"
+    command "bundle outdated"
   ], (err) -> throw err if err
 
 
