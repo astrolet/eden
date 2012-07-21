@@ -1,0 +1,9 @@
+{ "mocha":
+  { "alias":
+    { "silent": "--reporter dot"
+    , "verbose": "--reporter spec"
+    }
+  , "paths": ["lib"]
+  , "extension": ".spec.coffee"
+  }
+}

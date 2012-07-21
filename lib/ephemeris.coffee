@@ -138,7 +138,7 @@ class Ephemeris
     # Specific processing (e.g. points), or else return the same stream
     # without changing anything at all.
     if process is the_points
-      points stream, @settings
+      points stream
     else
       stream
 

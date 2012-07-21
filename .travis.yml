@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 0.6
+  - 0.8
+branches:
+  only:
+    - active
+    - master
+notifications:
+  email:
+    recipients:
+      - admin@astrolet.net
+    on_success: change
+    on_failure: always
+
