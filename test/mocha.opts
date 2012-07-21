@@ -1,0 +1,7 @@
+--compilers coffee:coffee-script
+--timeout 5000
+--reporter tap
+--ui bdd
+--colors
+--growl
+

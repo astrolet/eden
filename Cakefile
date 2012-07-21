@@ -1,4 +1,8 @@
-fs = require 'fs'
+fs   = require 'fs'
+json = require 'jsonify'
+_    = require 'underscore'
+
+test = "#{__dirname}/test"
 docs = "#{__dirname}/docs"
 
 {basename, join} = require 'path'
@@ -74,6 +78,56 @@ task 'update', "latest node modules & ruby gems - the lazy way", ->
 # Catches outdated modules that `cake outdated` doesn't report (major versions).
 task 'police', "checks npm package & dependencies with `police -l .`", ->
   command "police -l ."
+
+
+# Task options (for testing).
+option '-b', '--bcat', "\t pipe via `bcat` to the browser as if it's the console"
+option '-s', '--silent', "\t the tests are pretty quiet"
+option '-v', '--verbose', "\t verbose `cake test` option, pre-configured per test framework"
+option '-t', '--tests [TESTS]', "\t comma-delimited tests list: framework or path/ or path/part"
+
+# Run all the tests.
+task 'test', "multi-framework tests", (options) ->
+  # test frameworks configuration
+  # constraint: everything in a path is run by a single unique framework
+  frameworks = json.parse fs.readFileSync "#{test}/frameworks.json", 'utf8'
+
+  # build reverse index of framework lookup by path
+  paths = {}
+  for runner, config of frameworks
+    for path in config.paths
+      paths[path] = runner
+
+  # option defaults
+  options.neutral = true unless options.verbose or options.silent
+
+  # -t framework(s) or paths(s) override
+  tfp = options.tests
+  tfp = if tfp? then tfp.split(',') else _.keys frameworks
+
+  for fp in tfp
+    if fp.indexOf('/') is -1 # doesn't end in / (valid framework expectation)
+      runner = fp
+      unless frameworks[runner]?
+        console.log "Invalid '#{runner}' test framework."
+        continue # still run whatever else
+      config = frameworks[runner]
+      args = _.map config.paths, (path) -> "test/#{path}/*#{config.extension}"
+    else # it contains a path, verify it's valid & configure
+      path = fp.split('/')[0]
+      unless paths[path]?
+        console.log "Invalid test path: #{path}/."
+        continue # still run whatever else
+      runner = paths[path]
+      config = frameworks[runner]
+      args = ["test/#{fp}*#{config.extension}"]
+    for option in ["silent", "neutral", "verbose"]
+      args.unshift config.alias[option] if options[option]?
+
+    # TODO: these should probably be combined - so there is one `| bcat` output.
+    execute = "NODE_ENV=#{options.env} ./node_modules/.bin/#{runner} #{args.join ' '}"
+    execute += " | bcat" if options.bcat?
+    command execute
 
 
 # Literate programming for the coffee sources.

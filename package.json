@@ -36,8 +36,14 @@
   , "docco": "*"
   , "async": "*"
   , "police": "*"
+  , "jsonify": "*"
+  , "mocha": "*"
+  , "chai": "*"
   }
-, "scripts": { "postinstall": "coffee ./bin/post-install.coffee" }
+, "scripts":
+  { "postinstall": "coffee ./bin/post-install.coffee"
+  , "test": "cake -s test"
+  }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "!win32" ]
 , "engines" : { "node" : "0.8.x", "npm": "1.1.x" }
