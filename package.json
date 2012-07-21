@@ -46,6 +46,6 @@
   }
 , "bin": { "eden" : "./cli.js" }
 , "os" : [ "!win32" ]
-, "engines" : { "node" : "0.8.x", "npm": "1.1.x" }
+, "engines" : { "node" : "0.8.x | 0.6.x", "npm": "1.1.x" }
 , "licenses": [ { "type": "Unlicense", "url" : "http://unlicense.org/" } ]
 }
