@@ -1,3 +1,4 @@
+# [![Build Status](https://secure.travis-ci.org/astrolet/eden.png)](http://travis-ci.org/astrolet/eden)
 # eden -- [Eden - en(o)de - Node]
 
 
