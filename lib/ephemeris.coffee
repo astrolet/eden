@@ -168,9 +168,9 @@ class Ephemeris
     # Massage can handle.  The `eden` (cli) sets up an `Array`
     # if `--out` is a comma-delimited sequence.
     if _.isArray @settings.out
-      streamin = @pre ephemeris.stdout
+      streamin = @pre ephemeris
       massage = new Massage @settings.out
-      massage.pipe streamin, stream, "utf8"
+      massage.pipe streamin, stream
 
     # The rest of these are special cases or else straight output of whatever
     # precious returns.
@@ -180,26 +180,24 @@ class Ephemeris
     # single massage steps for a more readable json output.
     else if _.include ["inspect", "indent"], @settings.out
       massage = new Massage ["json", @settings.out]
-      massage.pipe ephemeris.stdout, stream, "utf8"
+      massage.pipe ephemeris, stream
 
     # The most readable output of `eden` and
     # the default in the context of cli usage.
     else if @settings.out is "phase"
-      phase (@pre ephemeris.stdout), stream
+      phase (@pre ephemeris), stream
 
     # Unprocessed - straight from *precious*, whatever didn't get caught above.
     # For example `eden -o pprint`.
     # Unless @pre modifies the data (points).
-    else @pre(ephemeris.stdout).pipe stream
+    else @pre(ephemeris).pipe stream
 
     # Special (error) cases.
-    ephemeris.stderr.on "data", (data) -> console.log data.toString("ascii")
-    ephemeris.on "exit", (code) ->
-      if code isnt 0 then console.log 'ephemeris exited with code ' + code;
+    ephemeris.on "error", (data) -> console.log data.toString()
 
     # Know when all the data has been got.
     # Useful for post-formatting with trailing `\n` by the cli, for example.
-    ephemeris.stdout.on "end", -> stream.emit "end"
+    ephemeris.on "end", -> stream.emit "end"
 
 
 module.exports = Ephemeris
