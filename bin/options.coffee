@@ -28,7 +28,7 @@ class Options
       @argv._ = ["know"]
 
     # command validation / setting
-    _.each _.intersect(argv._, this.commands), (command) ->
+    _.each _.intersection(argv._, this.commands), (command) ->
         if command is "help"
           @help = true
         else
