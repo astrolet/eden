@@ -1,7 +1,7 @@
 { "name": "eden"
 , "description": "this ephemeris does essentially node"
 , "keywords": [ "astrology", "ephemeris", "stream", "cli" ]
-, "version": "0.2.2-1"
+, "version": "0.2.3"
 , "homepage": "http://astrolin.com/to/eden"
 , "repository":
   { "type": "git"
@@ -22,13 +22,13 @@
 , "dependencies":
   { "coffee-script": "*"
   , "underscore": "*"
-  , "lin": ">=0.1.2"
+  , "archai": "*"
   , "upon": "*"
   , "which": "*"
   , "optimist": "0.3.4"
   , "colors": "*"
   , "JSONStream": "*"
-  , "massagist": ">0.0.2"
+  , "massagist": "*"
   , "cliff": "0.1.7"
   , "eyes": "*"
   }

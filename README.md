@@ -1,9 +1,6 @@
 # [![Build Status](https://secure.travis-ci.org/astrolet/eden.png)](http://travis-ci.org/astrolet/eden)
 # eden -- [Eden - en(o)de - Node]
 
-
-## WHAT
-
 _eden before no node_<br/>
 _node after no eden_<br/>
 _this **ephemeris on node** is_<br/>
@@ -42,7 +39,7 @@ Please investigate, before commercially using Eden's ephemeris module.
 
 ## ALSO
 
-eden(1), ephemeris(3), precious(7), gravity(6), lin(7), upon(7)
+precious(7), gravity(6), lin(7), upon(7)
 
 
 ## HOME

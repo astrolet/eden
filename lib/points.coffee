@@ -1,4 +1,4 @@
-Points  = require("lin").Points
+Points  = require("archai").Points
 Stream  = require("stream").Stream
 
 # This probably belongs to Points, if necessary at all...

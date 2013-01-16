@@ -1,7 +1,7 @@
 _       = require("underscore")
 cliff   = require("cliff")
 degrees = require("upon").degrees
-Ensemble = require("lin").Ensemble
+Ensemble = require("archai").Ensemble
 
 # This is just points presentation,
 # It could later be done with a `Backbone.View`.
