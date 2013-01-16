@@ -1,4 +1,4 @@
-Gaia    = require("lin").Gaia
+Gaia    = require("upon").Home
 which   = require("which")
 _       = require("massagist")._
 Massage = require("massagist").Massage
