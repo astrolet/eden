@@ -8,7 +8,8 @@ ephemeris(3)        annotations/ephemeris
 # external
 Index(7)            http://astrolet.github.com/eden
 Base(7)             http://astrolin.com/to/eden
-lin(7)              http://astrolet.github.com/lin
+archai(7)           http://astrolet.github.com/archai
 upon(7)             http://astrolet.github.com/upon
 precious(7)         http://astrolet.github.com/precious
-gravity(6)          http://astrolet.github.com/sin
+sin(6)              http://astrolet.github.com/sin
+

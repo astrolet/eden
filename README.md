@@ -39,7 +39,7 @@ Please investigate, before commercially using Eden's ephemeris module.
 
 ## ALSO
 
-precious(7), gravity(6), lin(7), upon(7)
+archai(7), upon(7), precious(7), sin(6)
 
 
 ## HOME
