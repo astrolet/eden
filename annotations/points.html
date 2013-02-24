@@ -7,7 +7,7 @@ Don't stringify, because phase will parse it again.</p>             </td>       
   <span class="nv">restream = </span><span class="k">new</span> <span class="nx">Stream</span>
   <span class="nx">stream</span><span class="p">.</span><span class="kc">on</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nf">(precious) -&gt;</span>
     <span class="nv">data = </span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span> <span class="nx">precious</span>
-    <span class="nv">points = </span><span class="k">new</span> <span class="nx">Points</span> <span class="p">[],</span> <span class="nv">data: </span><span class="nx">data</span>
+    <span class="nv">points = </span><span class="k">new</span> <span class="nx">Points</span> <span class="kc">null</span><span class="p">,</span> <span class="nv">data: </span><span class="nx">data</span>
     <span class="nx">restream</span><span class="p">.</span><span class="nx">emit</span> <span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">points</span><span class="p">.</span><span class="nx">toJSON</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;\n&quot;</span>
   <span class="nx">restream</span>
 
