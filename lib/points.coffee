@@ -11,6 +11,6 @@ module.exports = (stream) ->
   restream = new Stream
   stream.on "data", (precious) ->
     data = JSON.parse precious
-    points = new Points [], data: data
+    points = new Points null, data: data
     restream.emit "data", JSON.stringify(points.toJSON()) + "\n"
   restream
